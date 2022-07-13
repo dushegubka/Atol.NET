@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Atol.Drivers10.Fptr">
+        <HintPath>..\..\..\..\..\Program Files\ATOL\Drivers10\KKT\langs\netcore\Atol.Drivers10.Fptr.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
