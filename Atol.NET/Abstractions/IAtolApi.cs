@@ -8,8 +8,7 @@ public interface IAtolApi
     ResponseBase PowerOff();
     ResponseBase Reboot();
     ResponseBase Beep();
-
     ResponseBase Beep(int frequency, int duration);
-
+    IAtolViewSerializer Serializer { get; }
     bool IsConnected { get; }
 }
