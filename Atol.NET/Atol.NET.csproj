@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,4 +13,19 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SourceGenerators\SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DataProviders" />
+    </ItemGroup>
 </Project>
