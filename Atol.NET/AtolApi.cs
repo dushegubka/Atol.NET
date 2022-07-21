@@ -1,5 +1,7 @@
 ﻿using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
+using Atol.NET.DataProviders;
+using Atol.NET.Models;
 using Atol.NET.Models.Responses;
 
 namespace Atol.NET;
@@ -7,13 +9,27 @@ namespace Atol.NET;
 public class AtolApi : IAtolApi
 {
     private readonly IFptr _kkt;
-    
+
+    private readonly IEnumerable<IAtolDataProvider> _dataProviders;
+
+    // TODO: перенести инициализацию в фабричный метод
     public AtolApi()
     {
         _kkt = new Fptr();
         _kkt.open();
 
         IsConnected = _kkt.isOpened();
+        
+        _dataProviders = new List<IAtolDataProvider>()
+        {
+            new IntAtolDataProvider(_kkt),
+            new StringAtolDataProvider(_kkt),
+            new DateTimeAtolDataProvider(_kkt),
+            new BooleanAtolDataProvider(_kkt),
+            new DoubleAtolDataProvider(_kkt)
+        };
+        
+        Serializer = new DefaultViewSerializer(_dataProviders);
     }
 
     public AtolApi(string libraryPath)
@@ -22,6 +38,17 @@ public class AtolApi : IAtolApi
         _kkt.open();
         
         IsConnected = _kkt.isOpened();
+        
+        _dataProviders = new List<IAtolDataProvider>()
+        {
+            new IntAtolDataProvider(_kkt),
+            new StringAtolDataProvider(_kkt),
+            new DateTimeAtolDataProvider(_kkt),
+            new BooleanAtolDataProvider(_kkt),
+            new DoubleAtolDataProvider(_kkt)
+        };
+        
+        Serializer = new DefaultViewSerializer(_dataProviders);
     }
 
     public AtolApi(string id, string libraryPath)
@@ -30,6 +57,17 @@ public class AtolApi : IAtolApi
         _kkt.open();
         
         IsConnected = _kkt.isOpened();
+        
+        _dataProviders = new List<IAtolDataProvider>()
+        {
+            new IntAtolDataProvider(_kkt),
+            new StringAtolDataProvider(_kkt),
+            new DateTimeAtolDataProvider(_kkt),
+            new BooleanAtolDataProvider(_kkt),
+            new DoubleAtolDataProvider(_kkt)
+        };
+        
+        Serializer = new DefaultViewSerializer(_dataProviders);
     }
 
     /// <summary>
@@ -38,7 +76,15 @@ public class AtolApi : IAtolApi
     /// <returns>Общая информация о ККТ</returns>
     public GeneralInfoResponse GetGeneralInfo()
     {
-        throw new NotImplementedException();
+        _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
+        _kkt.queryData();
+        
+        var generalInfo = Serializer.GetView<KktGeneralInfo>();
+
+        return new GeneralInfoResponse
+        {
+            KktGeneralInfo = generalInfo
+        };
     }
 
     
@@ -94,7 +140,9 @@ public class AtolApi : IAtolApi
 
         return statusCode < 0 ? GetErrorResponse() : GetSuccessResponse();
     }
-    
+
+    public IAtolViewSerializer Serializer { get; }
+
     /// <summary>
     /// Подключена ли ККТ
     /// </summary>
