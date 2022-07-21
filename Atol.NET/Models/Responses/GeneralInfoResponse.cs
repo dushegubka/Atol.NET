@@ -2,5 +2,5 @@
 
 public class GeneralInfoResponse : ResponseBase
 {
-    
+    public KktGeneralInfo KktGeneralInfo { get; set; }
 }
