@@ -55,16 +55,19 @@ public class AtolApi : IAtolApi
     /// <summary>
     /// Выключение ККТ
     /// </summary>
-    /// <returns>ResponseBase</returns>
+    /// <returns>KktBaseResponse</returns>
     public KktBaseResponse PowerOff()
     {
-        throw new NotImplementedException();
+        return _requestService.SendRequest(() =>
+        {
+            _kkt.devicePoweroff();
+        });
     }
 
     /// <summary>
     /// Перезагрузка ККТ
     /// </summary>
-    /// <returns>ResponseBase</returns>
+    /// <returns>KktBaseResponse</returns>
     public KktBaseResponse Reboot()
     {
         var result = _requestService.SendRequest(() =>
@@ -79,7 +82,7 @@ public class AtolApi : IAtolApi
     /// <summary>
     /// Звуковой сигнал ККТ
     /// </summary>
-    /// <returns>ResponseBase</returns>
+    /// <returns>KktBaseResponse</returns>
     public KktBaseResponse Beep()
     {
         return _requestService.SendRequest(() =>
@@ -93,10 +96,15 @@ public class AtolApi : IAtolApi
     /// </summary>
     /// <param name="frequency">Частота</param>
     /// <param name="duration">Длительность</param>
-    /// <returns>ResponseBase</returns>
+    /// <returns>KktBaseResponse</returns>
     public KktBaseResponse Beep(int frequency, int duration)
     {
-        throw new NotImplementedException();
+        return _requestService.SendRequest(() =>
+        {
+            _kkt.setParam(Constants.LIBFPTR_PARAM_FREQUENCY, frequency);
+            _kkt.setParam(Constants.LIBFPTR_PARAM_DURATION, duration);
+            _kkt.beep();
+        });
     }
 
     public IAtolViewSerializer? Serializer { get; private set; }
