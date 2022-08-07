@@ -40,10 +40,7 @@ public class AtolApi : IAtolApi
         Initialize();
     }
 
-    /// <summary>
-    /// Возвращает общую информацию о ККТ
-    /// </summary>
-    /// <returns>Общая информация о ККТ</returns>
+    /// <inheridoc />
     public KktResponse<KktGeneralInfo> GetGeneralInfo()
     {
         _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
@@ -54,10 +51,7 @@ public class AtolApi : IAtolApi
         return result;
     }
     
-    /// <summary>
-    /// Выключение ККТ
-    /// </summary>
-    /// <returns>KktBaseResponse</returns>
+    /// <inheridoc />
     public KktBaseResponse PowerOff()
     {
         return _requestService.SendRequest(() =>
@@ -65,11 +59,8 @@ public class AtolApi : IAtolApi
             _kkt.devicePoweroff();
         });
     }
-
-    /// <summary>
-    /// Перезагрузка ККТ
-    /// </summary>
-    /// <returns>KktBaseResponse</returns>
+    
+    /// <inheridoc />
     public KktBaseResponse Reboot()
     {
         var result = _requestService.SendRequest(() =>
@@ -81,10 +72,7 @@ public class AtolApi : IAtolApi
         return result;
     }
     
-    /// <summary>
-    /// Звуковой сигнал ККТ
-    /// </summary>
-    /// <returns>KktBaseResponse</returns>
+    /// <inheridoc />
     public KktBaseResponse Beep()
     {
         return _requestService.SendRequest(() =>
@@ -92,13 +80,8 @@ public class AtolApi : IAtolApi
             _kkt.beep();
         });
     }
-
-    /// <summary>
-    /// Звуковой сигнал ККТ
-    /// </summary>
-    /// <param name="frequency">Частота</param>
-    /// <param name="duration">Длительность</param>
-    /// <returns>KktBaseResponse</returns>
+    
+    /// <inheridoc />
     public KktBaseResponse Beep(int frequency, int duration)
     {
         return _requestService.SendRequest(() =>
@@ -109,6 +92,7 @@ public class AtolApi : IAtolApi
         });
     }
 
+    /// <inheridoc />
     public KktBaseResponse SetDateTime(DateTime dateTime)
     {
         return _requestService.SendRequest(() =>
@@ -118,13 +102,13 @@ public class AtolApi : IAtolApi
         });
     }
 
+    /// <inheridoc />
     public IAtolViewSerializer? Serializer { get; private set; }
     
+    /// <inheridoc />
     public IFiscalStorageCategory FiscalStorageCategory { get; private set; }
-
-    /// <summary>
-    /// Подключена ли ККТ
-    /// </summary>
+    
+    /// <inheridoc />
     public bool IsConnected { get; private set; }
 
     private void Initialize()
