@@ -41,7 +41,7 @@ namespace SourceGenerators
             foreach (var type in _types)
             {
                 var className = $"{GetLettersFromString(type.Name)}AtolDataProvider";
-                    var source = string.Format(@"using System;
+                var source = string.Format(@"using System;
 using System.Collections.Generic;
 using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
