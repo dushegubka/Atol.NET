@@ -18,6 +18,8 @@ public class FiscalStorageCategory : IFiscalStorageCategory
         _kkt = kkt;
         _requestService = requestService;
     }
+    
+    /// <inheritdoc />
     public KktResponse<FiscalStorageInfo> GetFiscalStorageInfo()
     {
         _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_FN_INFO);
@@ -26,6 +28,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
         return _requestService.GetData<FiscalStorageInfo>();
     }
 
+    /// <inheritdoc />
     public KktResponse<LastReceiptInfo> GetLastReceiptInfo()
     {
         _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_LAST_RECEIPT);

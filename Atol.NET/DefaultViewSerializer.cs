@@ -26,7 +26,7 @@ public class DefaultViewSerializer : IAtolViewSerializer
 
         foreach (var property in properties)
         {
-            var attribute = property.GetCustomAttribute(typeof(IntConstantAttribute)) as IntConstantAttribute;
+            var attribute = property.GetCustomAttribute(typeof(ConstantAttribute)) as ConstantAttribute;
 
             IAtolDataProvider? provider = default;
             
