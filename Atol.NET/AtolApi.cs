@@ -1,5 +1,7 @@
 ﻿using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
+using Atol.NET.Abstractions.Categories;
+using Atol.NET.Categories;
 using Atol.NET.DataProviders;
 using Atol.NET.Exceptions;
 using Atol.NET.Models;
@@ -108,6 +110,8 @@ public class AtolApi : IAtolApi
     }
 
     public IAtolViewSerializer? Serializer { get; private set; }
+    
+    public IFiscalStorageCategory FiscalStorageCategory { get; private set; }
 
     /// <summary>
     /// Подключена ли ККТ
@@ -128,5 +132,11 @@ public class AtolApi : IAtolApi
         };
         Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
         _requestService = new KktRequestService(_kkt, Serializer);
+        InitializerCategories();
+    }
+
+    private void InitializerCategories()
+    {
+        FiscalStorageCategory = new FiscalStorageCategory(_kkt, _requestService);
     }
 }
