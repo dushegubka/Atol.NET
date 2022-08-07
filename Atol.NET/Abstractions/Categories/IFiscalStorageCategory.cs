@@ -16,4 +16,16 @@ public interface IFiscalStorageCategory
     /// </summary>
     /// <returns>LastReceiptInfo</returns>
     KktResponse<LastReceiptInfo> GetLastReceiptInfo();
+    
+    /// <summary>
+    /// Возвращает информацию о последнем документе
+    /// </summary>
+    /// <returns>LastDocumentInfo</returns>
+    KktResponse<LastDocumentInfo> GetLastDocumentInfo();
+    
+    /// <summary>
+    /// Возвращает информацию о смене
+    /// </summary>
+    /// <returns>ShiftInfo</returns>
+    KktResponse<ShiftInfo> GetShiftInfo();
 }

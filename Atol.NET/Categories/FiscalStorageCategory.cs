@@ -36,4 +36,22 @@ public class FiscalStorageCategory : IFiscalStorageCategory
 
         return _requestService.GetData<LastReceiptInfo>();
     }
+
+    /// <inheritdoc />
+    public KktResponse<LastDocumentInfo> GetLastDocumentInfo()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_LAST_DOCUMENT);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<LastDocumentInfo>();
+    }
+
+    /// <inheritdoc />
+    public KktResponse<ShiftInfo> GetShiftInfo()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_SHIFT);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<ShiftInfo>();
+    }
 }
