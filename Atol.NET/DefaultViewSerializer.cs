@@ -10,10 +10,10 @@ namespace Atol.NET;
 
 public class DefaultViewSerializer : IAtolViewSerializer
 {
-    private readonly IEnumerable<IAtolDataProvider> _dataProviders;
+    private readonly IEnumerable<IAtolDataProvider>? _dataProviders;
     private readonly IFptr _kkt;
 
-    public DefaultViewSerializer(IEnumerable<IAtolDataProvider> dataProviders, IFptr kkt)
+    public DefaultViewSerializer(IEnumerable<IAtolDataProvider>? dataProviders, IFptr kkt)
     {
         _dataProviders = dataProviders;
         _kkt = kkt;
@@ -28,7 +28,7 @@ public class DefaultViewSerializer : IAtolViewSerializer
         {
             var attribute = property.GetCustomAttribute(typeof(IntConstantAttribute)) as IntConstantAttribute;
 
-            IAtolDataProvider provider = default;
+            IAtolDataProvider? provider = default;
             
             if (property.PropertyType.IsEnum)
             {

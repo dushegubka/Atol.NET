@@ -10,6 +10,6 @@ public interface IAtolApi
     KktBaseResponse Reboot();
     KktBaseResponse Beep();
     KktBaseResponse Beep(int frequency, int duration);
-    IAtolViewSerializer Serializer { get; }
+    IAtolViewSerializer? Serializer { get; }
     bool IsConnected { get; }
 }
