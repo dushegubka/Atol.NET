@@ -1,6 +1,7 @@
 ﻿using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
 using Atol.NET.DataProviders;
+using Atol.NET.Exceptions;
 using Atol.NET.Models;
 using Atol.NET.Models.Responses;
 
@@ -29,7 +30,7 @@ public class AtolApi : IAtolApi
             new DoubleAtolDataProvider(_kkt)
         };
         
-        Serializer = new DefaultViewSerializer(_dataProviders);
+        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
     }
 
     public AtolApi(string libraryPath)
@@ -48,7 +49,7 @@ public class AtolApi : IAtolApi
             new DoubleAtolDataProvider(_kkt)
         };
         
-        Serializer = new DefaultViewSerializer(_dataProviders);
+        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
     }
 
     public AtolApi(string id, string libraryPath)
@@ -67,24 +68,16 @@ public class AtolApi : IAtolApi
             new DoubleAtolDataProvider(_kkt)
         };
         
-        Serializer = new DefaultViewSerializer(_dataProviders);
+        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
     }
 
     /// <summary>
     /// Возвращает общую информацию о ККТ
     /// </summary>
     /// <returns>Общая информация о ККТ</returns>
-    public GeneralInfoResponse GetGeneralInfo()
+    public KktResponse<KktGeneralInfo> GetGeneralInfo()
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
-        _kkt.queryData();
-        
-        var generalInfo = Serializer.GetView<KktGeneralInfo>();
-
-        return new GeneralInfoResponse
-        {
-            KktGeneralInfo = generalInfo
-        };
+        throw new NotImplementedException();
     }
 
     
@@ -92,37 +85,27 @@ public class AtolApi : IAtolApi
     /// Выключение ККТ
     /// </summary>
     /// <returns>ResponseBase</returns>
-    public ResponseBase PowerOff()
+    public KktBaseResponse PowerOff()
     {
-        var response = new ResponseBase();
-
-        var statusCode = _kkt.devicePoweroff();
-
-        return statusCode < 0 ? GetErrorResponse() : GetSuccessResponse();
+        throw new NotImplementedException();
     }
 
     /// <summary>
     /// Перезагрузка ККТ
     /// </summary>
     /// <returns>ResponseBase</returns>
-    public ResponseBase Reboot()
+    public KktBaseResponse Reboot()
     {
-        var response = new ResponseBase();
-        
-        var statusCode = _kkt.deviceReboot();
-
-        return statusCode < 0 ? GetErrorResponse() : GetSuccessResponse();
+        throw new NotImplementedException();
     }
     
     /// <summary>
     /// Звуковой сигнал ККТ
     /// </summary>
     /// <returns>ResponseBase</returns>
-    public ResponseBase Beep()
+    public KktBaseResponse Beep()
     {
-        var statusCode = _kkt.beep();
-
-        return statusCode < 0 ? GetErrorResponse() : GetSuccessResponse();
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -131,14 +114,9 @@ public class AtolApi : IAtolApi
     /// <param name="frequency">Частота</param>
     /// <param name="duration">Длительность</param>
     /// <returns>ResponseBase</returns>
-    public ResponseBase Beep(int frequency, int duration)
+    public KktBaseResponse Beep(int frequency, int duration)
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_FREQUENCY, frequency);
-        _kkt.setParam(Constants.LIBFPTR_PARAM_DURATION, duration);
-        
-        var statusCode = _kkt.beep();
-
-        return statusCode < 0 ? GetErrorResponse() : GetSuccessResponse();
+        throw new NotImplementedException();
     }
 
     public IAtolViewSerializer Serializer { get; }
@@ -147,28 +125,4 @@ public class AtolApi : IAtolApi
     /// Подключена ли ККТ
     /// </summary>
     public bool IsConnected { get; private set; }
-
-    private ResponseBase GetErrorResponse()
-    {
-        var response = new ResponseBase()
-        {
-            IsSuccess = false,
-            ErrorCode = _kkt.errorCode(),
-            Description = _kkt.errorDescription()
-        };
-
-        _kkt.resetError();
-
-        return response;
-    }
-
-    private ResponseBase GetSuccessResponse()
-    {
-        var response = new ResponseBase()
-        {
-            IsSuccess = true
-        };
-
-        return response;
-    }
 }
