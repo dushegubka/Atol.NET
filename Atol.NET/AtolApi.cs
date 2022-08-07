@@ -109,6 +109,15 @@ public class AtolApi : IAtolApi
         });
     }
 
+    public KktBaseResponse SetDateTime(DateTime dateTime)
+    {
+        return _requestService.SendRequest(() =>
+        {
+            _kkt.setParam(Constants.LIBFPTR_PARAM_DATE_TIME, dateTime);
+            _kkt.writeDateTime();
+        });
+    }
+
     public IAtolViewSerializer? Serializer { get; private set; }
     
     public IFiscalStorageCategory FiscalStorageCategory { get; private set; }

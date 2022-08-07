@@ -11,6 +11,7 @@ public interface IAtolApi
     KktBaseResponse Reboot();
     KktBaseResponse Beep();
     KktBaseResponse Beep(int frequency, int duration);
+    KktBaseResponse SetDateTime(DateTime dateTime);
     IAtolViewSerializer? Serializer { get; }
     IFiscalStorageCategory FiscalStorageCategory { get; }
     bool IsConnected { get; }
