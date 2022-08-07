@@ -15,7 +15,6 @@ public class AtolApi : IAtolApi
     private IEnumerable<IAtolDataProvider>? _dataProviders;
     private IKktRequestService _requestService;
 
-    // TODO: перенести инициализацию в фабричный метод
     public AtolApi()
     {
         _kkt = new Fptr();
@@ -50,7 +49,17 @@ public class AtolApi : IAtolApi
 
         return result;
     }
-    
+
+    /// <inheridoc />
+    public KktResponse<KktLicenseState> GetLicenseState(int licenseId)
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_LICENSE_ACTIVATED);
+        _kkt.setParam(Constants.LIBFPTR_PARAM_LICENSE_NUMBER, licenseId);
+        _kkt.queryData();
+
+        return _requestService.GetData<KktLicenseState>();
+    }
+
     /// <inheridoc />
     public KktBaseResponse PowerOff()
     {

@@ -13,6 +13,13 @@ public interface IAtolApi
     KktResponse<KktGeneralInfo> GetGeneralInfo();
     
     /// <summary>
+    /// Возвращает информацию о лицензии
+    /// </summary>
+    /// <param name="licenseId">Id лицензии</param>
+    /// <returns>Информация о лицензии</returns>
+    KktResponse<KktLicenseState> GetLicenseState(int licenseId);
+
+    /// <summary>
     /// Выключение ККТ
     /// </summary>
     /// <returns>KktBaseResponse</returns>
@@ -44,7 +51,7 @@ public interface IAtolApi
     /// <param name="dateTime">Дата и время</param>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse SetDateTime(DateTime dateTime);
-    
+
     /// <summary>
     /// Сериализатор, строящий модели
     /// </summary>
