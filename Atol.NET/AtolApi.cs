@@ -10,8 +10,8 @@ namespace Atol.NET;
 public class AtolApi : IAtolApi
 {
     private readonly IFptr _kkt;
-
-    private readonly IEnumerable<IAtolDataProvider> _dataProviders;
+    private IEnumerable<IAtolDataProvider>? _dataProviders;
+    private IKktRequestService _requestService;
 
     // TODO: перенести инициализацию в фабричный метод
     public AtolApi()
@@ -19,37 +19,15 @@ public class AtolApi : IAtolApi
         _kkt = new Fptr();
         _kkt.open();
 
-        IsConnected = _kkt.isOpened();
-        
-        _dataProviders = new List<IAtolDataProvider>()
-        {
-            new IntAtolDataProvider(_kkt),
-            new StringAtolDataProvider(_kkt),
-            new DateTimeAtolDataProvider(_kkt),
-            new BooleanAtolDataProvider(_kkt),
-            new DoubleAtolDataProvider(_kkt)
-        };
-        
-        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
+        Initialize();
     }
 
     public AtolApi(string libraryPath)
     {
         _kkt = new Fptr(libraryPath);
         _kkt.open();
-        
-        IsConnected = _kkt.isOpened();
-        
-        _dataProviders = new List<IAtolDataProvider>()
-        {
-            new IntAtolDataProvider(_kkt),
-            new StringAtolDataProvider(_kkt),
-            new DateTimeAtolDataProvider(_kkt),
-            new BooleanAtolDataProvider(_kkt),
-            new DoubleAtolDataProvider(_kkt)
-        };
-        
-        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
+
+        Initialize();
     }
 
     public AtolApi(string id, string libraryPath)
@@ -57,18 +35,7 @@ public class AtolApi : IAtolApi
         _kkt = new Fptr(id, libraryPath);
         _kkt.open();
         
-        IsConnected = _kkt.isOpened();
-        
-        _dataProviders = new List<IAtolDataProvider>()
-        {
-            new IntAtolDataProvider(_kkt),
-            new StringAtolDataProvider(_kkt),
-            new DateTimeAtolDataProvider(_kkt),
-            new BooleanAtolDataProvider(_kkt),
-            new DoubleAtolDataProvider(_kkt)
-        };
-        
-        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
+        Initialize();
     }
 
     /// <summary>
@@ -77,9 +44,13 @@ public class AtolApi : IAtolApi
     /// <returns>Общая информация о ККТ</returns>
     public KktResponse<KktGeneralInfo> GetGeneralInfo()
     {
-        throw new NotImplementedException();
-    }
+        _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
+        _kkt.queryData();
 
+        var result = _requestService.GetData<KktGeneralInfo>();
+
+        return result;
+    }
     
     /// <summary>
     /// Выключение ККТ
@@ -96,7 +67,13 @@ public class AtolApi : IAtolApi
     /// <returns>ResponseBase</returns>
     public KktBaseResponse Reboot()
     {
-        throw new NotImplementedException();
+        var result = _requestService.SendRequest(() =>
+        {
+            _kkt.setParam(Constants.LIBFPTR_PARAM_PRINT_REPORT, false);
+            _kkt.deviceReboot();
+        });
+
+        return result;
     }
     
     /// <summary>
@@ -105,7 +82,10 @@ public class AtolApi : IAtolApi
     /// <returns>ResponseBase</returns>
     public KktBaseResponse Beep()
     {
-        throw new NotImplementedException();
+        return _requestService.SendRequest(() =>
+        {
+            _kkt.beep();
+        });
     }
 
     /// <summary>
@@ -119,10 +99,26 @@ public class AtolApi : IAtolApi
         throw new NotImplementedException();
     }
 
-    public IAtolViewSerializer Serializer { get; }
+    public IAtolViewSerializer? Serializer { get; private set; }
 
     /// <summary>
     /// Подключена ли ККТ
     /// </summary>
     public bool IsConnected { get; private set; }
+
+    private void Initialize()
+    {
+        IsConnected = _kkt.isOpened();
+        
+        _dataProviders = new List<IAtolDataProvider>()
+        {
+            new IntAtolDataProvider(_kkt),
+            new StringAtolDataProvider(_kkt),
+            new DateTimeAtolDataProvider(_kkt),
+            new BooleanAtolDataProvider(_kkt),
+            new DoubleAtolDataProvider(_kkt)
+        };
+        Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
+        _requestService = new KktRequestService(_kkt, Serializer);
+    }
 }
