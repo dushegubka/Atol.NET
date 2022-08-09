@@ -49,9 +49,9 @@ public class DefaultViewSerializer : IAtolViewSerializer
         return JsonSerializer.Deserialize<T>(jsonObject.ToString());
     }
 
-    public T GetValueByConstant<T>(int contant, Type returningType)
+    public T GetValueByConstant<T>(int contant)
     {
-        var provider = _dataProviders.FirstOrDefault(x => x.GetResultType() == returningType);
+        var provider = _dataProviders.FirstOrDefault(x => x.GetResultType() == typeof(T));
 
         var result = (T)provider.GetData(contant);
         

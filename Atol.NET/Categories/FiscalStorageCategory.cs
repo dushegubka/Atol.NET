@@ -61,7 +61,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
         _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_DOCUMENTS_COUNT_IN_SHIFT);
         _kkt.fnQueryData();
 
-        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_DOCUMENTS_COUNT, typeof(int));
+        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_DOCUMENTS_COUNT);
     }
 
     /// <inheritdoc />
@@ -89,7 +89,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
         _kkt.setParam(Constants.LIBFPTR_PARAM_DATE_TIME, date);
         _kkt.fnQueryData();
 
-        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_FN_DAYS_REMAIN, typeof(int));
+        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_FN_DAYS_REMAIN);
     }
 
     /// <inheritdoc />

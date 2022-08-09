@@ -76,11 +76,11 @@ public class KktRequestService : IKktRequestService
         }
     }
 
-    public KktResponse<T> GetDataByConstant<T>(int constant, Type returningType)
+    public KktResponse<T> GetDataByConstant<T>(int constant)
     {
         try
         {
-            var response = _serializer.GetValueByConstant<T>(constant, returningType);
+            var response = _serializer.GetValueByConstant<T>(constant);
             
             return new KktResponse<T>
             {

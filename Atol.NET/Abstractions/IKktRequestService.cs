@@ -7,5 +7,5 @@ public interface IKktRequestService
     KktBaseResponse SendRequest(Action action);
     KktResponse<T> GetData<T>();
 
-    KktResponse<T> GetDataByConstant<T>(int constant, Type returningType);
+    KktResponse<T> GetDataByConstant<T>(int constant);
 }
