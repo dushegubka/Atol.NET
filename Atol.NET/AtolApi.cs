@@ -39,7 +39,7 @@ public class AtolApi : IAtolApi
         Initialize();
     }
 
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktResponse<KktGeneralInfo> GetGeneralInfo()
     {
         _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
@@ -50,7 +50,7 @@ public class AtolApi : IAtolApi
         return result;
     }
 
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktResponse<KktLicenseState> GetLicenseState(int licenseId)
     {
         _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_LICENSE_ACTIVATED);
@@ -60,7 +60,7 @@ public class AtolApi : IAtolApi
         return _requestService.GetData<KktLicenseState>();
     }
 
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktBaseResponse PowerOff()
     {
         return _requestService.SendRequest(() =>
@@ -69,7 +69,7 @@ public class AtolApi : IAtolApi
         });
     }
     
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktBaseResponse Reboot()
     {
         var result = _requestService.SendRequest(() =>
@@ -81,7 +81,7 @@ public class AtolApi : IAtolApi
         return result;
     }
     
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktBaseResponse Beep()
     {
         return _requestService.SendRequest(() =>
@@ -90,7 +90,7 @@ public class AtolApi : IAtolApi
         });
     }
     
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktBaseResponse Beep(int frequency, int duration)
     {
         return _requestService.SendRequest(() =>
@@ -101,7 +101,7 @@ public class AtolApi : IAtolApi
         });
     }
 
-    /// <inheridoc />
+    /// <inheritdoc />
     public KktBaseResponse SetDateTime(DateTime dateTime)
     {
         return _requestService.SendRequest(() =>
@@ -111,13 +111,13 @@ public class AtolApi : IAtolApi
         });
     }
 
-    /// <inheridoc />
+    /// <inheritdoc />
     public IAtolViewSerializer? Serializer { get; private set; }
     
-    /// <inheridoc />
-    public IFiscalStorageCategory FiscalStorageCategory { get; private set; }
+    /// <inheritdoc />
+    public IFiscalStorageCategory FiscalStorage { get; private set; }
     
-    /// <inheridoc />
+    /// <inheritdoc />
     public bool IsConnected { get; private set; }
 
     private void Initialize()
@@ -130,7 +130,8 @@ public class AtolApi : IAtolApi
             new StringAtolDataProvider(_kkt),
             new DateTimeAtolDataProvider(_kkt),
             new BooleanAtolDataProvider(_kkt),
-            new DoubleAtolDataProvider(_kkt)
+            new DoubleAtolDataProvider(_kkt),
+            new ByteAtolDataProvider(_kkt)
         };
         Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
         _requestService = new KktRequestService(_kkt, Serializer);
@@ -139,6 +140,6 @@ public class AtolApi : IAtolApi
 
     private void InitializerCategories()
     {
-        FiscalStorageCategory = new FiscalStorageCategory(_kkt, _requestService);
+        FiscalStorage = new FiscalStorageCategory(_kkt, _requestService);
     }
 }

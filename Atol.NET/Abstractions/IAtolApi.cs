@@ -60,7 +60,7 @@ public interface IAtolApi
     /// <summary>
     /// Категория для работы с фискальным накопителем
     /// </summary>
-    IFiscalStorageCategory FiscalStorageCategory { get; }
+    IFiscalStorageCategory FiscalStorage { get; }
     
     /// <summary>
     /// Подключена ли ККТ
