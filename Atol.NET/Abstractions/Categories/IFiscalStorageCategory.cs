@@ -66,4 +66,24 @@ public interface IFiscalStorageCategory
     /// <param name="receiptNumber">Номер документа в фискальном накопителе</param>
     /// <returns>Квитанция ОФД</returns>
     KktResponse<OfdReceipt> GetOfdReceipt(int receiptNumber);
+    
+    /// <summary>
+    /// Возвращает информацию о документе по номеру документа в ФН
+    /// </summary>
+    /// <param name="receiptNumber">Номер документа в ФН</param>
+    /// <returns>Информацию о фискальном документе</returns>
+    KktResponse<FiscalDocumentInfo> GetFiscalDocumentInfo(int receiptNumber);
+    
+    /// <summary>
+    ///  Возвращает статус информационного обмена с ИСМ
+    /// <remarks><b>Поддерживается только для ККТ версий 5.X, работающих по ФФД ≥ 1.2</b></remarks>
+    /// </summary>
+    /// <returns>Статус информационного обмена с ИСМ</returns>
+    KktResponse<IsmExchangeStatusInfo> GetIsmExchangeStatusInfo();
+    
+    /// <summary>
+    /// Возвращает ошибки обмена с ИСМ
+    /// </summary>
+    /// <returns>Ошибки обмена с ИСМ</returns>
+    KktResponse<IsmExchangeError> GetIsmExchangeErrors();
 }

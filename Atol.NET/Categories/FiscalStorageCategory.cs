@@ -110,4 +110,32 @@ public class FiscalStorageCategory : IFiscalStorageCategory
 
         return _requestService.GetData<OfdReceipt>();
     }
+    
+    /// <inheritdoc />
+    public KktResponse<FiscalDocumentInfo> GetFiscalDocumentInfo(int receiptNumber)
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_DOCUMENT_BY_NUMBER);
+        _kkt.setParam(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, receiptNumber);
+        _kkt.fnQueryData();
+        
+        return _requestService.GetData<FiscalDocumentInfo>();
+    }
+
+    /// <inheritdoc />
+    public KktResponse<IsmExchangeStatusInfo> GetIsmExchangeStatusInfo()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_ISM_EXCHANGE_STATUS);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<IsmExchangeStatusInfo>();
+    }
+
+    /// <inheritdoc />
+    public KktResponse<IsmExchangeError> GetIsmExchangeErrors()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_ISM_ERRORS);
+        _kkt.fnQueryData();
+        
+        return _requestService.GetData<IsmExchangeError>();
+    }
 }
