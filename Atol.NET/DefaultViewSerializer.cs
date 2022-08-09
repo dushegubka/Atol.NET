@@ -49,6 +49,17 @@ public class DefaultViewSerializer : IAtolViewSerializer
         return JsonSerializer.Deserialize<T>(jsonObject.ToString());
     }
 
+    public T GetValueByConstant<T>(int contant, Type returningType)
+    {
+        var provider = _dataProviders.FirstOrDefault(x => x.GetResultType() == returningType);
+
+        var result = (T)provider.GetData(contant);
+        
+        CheckAndThrowIfError();
+
+        return result;
+    }
+
     private void CheckAndThrowIfError()
     {
         var result = _kkt.errorCode();
