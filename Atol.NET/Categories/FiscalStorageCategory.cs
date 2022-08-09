@@ -63,4 +63,13 @@ public class FiscalStorageCategory : IFiscalStorageCategory
 
         return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_DOCUMENTS_COUNT, typeof(int));
     }
+
+    /// <inheritdoc />
+    public KktResponse<FfdVersionsInfo> GetFfdVersionsInfo()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_FFD_VERSIONS);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<FfdVersionsInfo>();
+    }
 }

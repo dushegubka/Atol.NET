@@ -34,4 +34,10 @@ public interface IFiscalStorageCategory
     /// </summary>
     /// <returns>Количество фискальных документов за смену </returns>
     KktResponse<uint> GetFiscalDocumentsCount();
+    
+    /// <summary>
+    /// Возвращает информацию о версиях ФФД
+    /// </summary>
+    /// <returns>Информация о версиях ФФД</returns>
+    KktResponse<FfdVersionsInfo> GetFfdVersionsInfo();
 }
