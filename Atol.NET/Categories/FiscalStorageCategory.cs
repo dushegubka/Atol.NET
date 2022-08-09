@@ -72,4 +72,42 @@ public class FiscalStorageCategory : IFiscalStorageCategory
 
         return _requestService.GetData<FfdVersionsInfo>();
     }
+    
+    /// <inheritdoc />
+    public KktResponse<FnValidityInfo> GetFnValidityInfo()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_VALIDITY);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<FnValidityInfo>();
+    }
+
+    /// <inheritdoc />
+    public KktResponse<uint> GetFnRemainingDays(DateTime date)
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_VALIDITY_DAYS);
+        _kkt.setParam(Constants.LIBFPTR_PARAM_DATE_TIME, date);
+        _kkt.fnQueryData();
+
+        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_FN_DAYS_REMAIN, typeof(int));
+    }
+
+    /// <inheritdoc />
+    public KktResponse<OfdError> GetOfdErrors()
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_ERRORS);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<OfdError>();
+    }
+
+    /// <inheritdoc />
+    public KktResponse<OfdReceipt> GetOfdReceipt(int receiptNumber)
+    {
+        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_TICKET_BY_DOC_NUMBER);
+        _kkt.setParam(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, receiptNumber);
+        _kkt.fnQueryData();
+
+        return _requestService.GetData<OfdReceipt>();
+    }
 }

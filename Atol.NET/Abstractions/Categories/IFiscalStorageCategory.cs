@@ -40,4 +40,30 @@ public interface IFiscalStorageCategory
     /// </summary>
     /// <returns>Информация о версиях ФФД</returns>
     KktResponse<FfdVersionsInfo> GetFfdVersionsInfo();
+    
+    /// <summary>
+    /// Возвращает информацию о сроке действия ФН
+    /// </summary>
+    /// <returns>Информация о сроке действия ФН</returns>
+    KktResponse<FnValidityInfo> GetFnValidityInfo();
+    
+    /// <summary>
+    /// Возвращает количество дней, оставшихся до окончания срока действия ФН
+    /// </summary>
+    /// <param name="date">Дата с которой начать считать дни до окончания</param>
+    /// <returns>Количество дней, оставшихся до окончания срока действия</returns>
+    KktResponse<uint> GetFnRemainingDays(DateTime date);
+
+    /// <summary>
+    /// Возвращает ошибки обмена с ОФД
+    /// </summary>
+    /// <returns>Ошибки обмена с ОФД</returns>
+    KktResponse<OfdError> GetOfdErrors();
+    
+    /// <summary>
+    /// Возвращает квитанцию ОФД из ФН 
+    /// </summary>
+    /// <param name="receiptNumber">Номер документа в фискальном накопителе</param>
+    /// <returns>Квитанция ОФД</returns>
+    KktResponse<OfdReceipt> GetOfdReceipt(int receiptNumber);
 }
