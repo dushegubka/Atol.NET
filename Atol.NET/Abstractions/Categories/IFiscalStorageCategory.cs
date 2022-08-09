@@ -28,4 +28,10 @@ public interface IFiscalStorageCategory
     /// </summary>
     /// <returns>ShiftInfo</returns>
     KktResponse<ShiftInfo> GetShiftInfo();
+
+    /// <summary>
+    /// Возвращает количество фискальных документов за смену
+    /// </summary>
+    /// <returns>Количество фискальных документов за смену </returns>
+    KktResponse<uint> GetFiscalDocumentsCount();
 }
