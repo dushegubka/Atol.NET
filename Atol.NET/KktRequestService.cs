@@ -25,13 +25,16 @@ public class KktRequestService : IKktRequestService
             return new KktBaseResponse
             {
                 IsSuccess = true,
-                Error = new KktResponseError()
+                Error = new KktResponseError
+                {
+                    Code = 0,
+                    Description = string.Empty
+                }
             };
         }
         catch (AtolException e)
         {
-            Console.WriteLine(e);
-            return new KktBaseResponse()
+            return new KktBaseResponse
             {
                 IsSuccess = false,
                 Error = new KktResponseError
@@ -43,11 +46,42 @@ public class KktRequestService : IKktRequestService
         }
     }
 
-    public KktResponse<T> GetData<T>() where T : class
+    public KktResponse<T> GetData<T>()
     {
         try
         {
             var response = _serializer.GetView<T>();
+            return new KktResponse<T>
+            {
+                Data = response,
+                IsSuccess = true,
+                Error = new KktResponseError
+                {
+                    Code = 0,
+                    Description = string.Empty
+                }
+            };
+        }
+        catch (AtolException e)
+        {
+            return new KktResponse<T>
+            {
+                IsSuccess = false,
+                Error = new KktResponseError
+                {
+                    Code = e.ErrorCode,
+                    Description = e.Message
+                }
+            };
+        }
+    }
+
+    public KktResponse<T> GetDataByConstant<T>(int constant, Type returningType)
+    {
+        try
+        {
+            var response = _serializer.GetValueByConstant<T>(constant, returningType);
+            
             return new KktResponse<T>
             {
                 Data = response,
@@ -72,7 +106,7 @@ public class KktRequestService : IKktRequestService
             };
         }
     }
-    
+
     private void CheckAndThrowIfError()
     {
         var result = _kkt.errorCode();
