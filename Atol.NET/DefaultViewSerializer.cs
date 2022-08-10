@@ -25,11 +25,13 @@ public class DefaultViewSerializer : IAtolViewSerializer
 
         foreach (var property in properties)
         {
-            var attribute = property.GetCustomAttribute(typeof(ConstantAttribute)) as ConstantAttribute;
+            var attribute = property.GetCustomAttribute(typeof(ConstantAttribute)) as ConstantAttribute
+                            ?? throw new InvalidOperationException("Property is null");
 
             var provider = property.PropertyType.IsEnum
                 ? _dataProviders.FirstOrDefault(x => x.GetResultType() == typeof(int))
-                : _dataProviders.FirstOrDefault(x => x.GetResultType() == property.PropertyType);
+                : _dataProviders.FirstOrDefault(x => x.GetResultType() == property.PropertyType)
+                ?? throw new InvalidOperationException($"No data provider found for this type");
             
             
             jsonObject.Add(property.Name, JsonValue.Create(provider.GetData(attribute.Constant)));
