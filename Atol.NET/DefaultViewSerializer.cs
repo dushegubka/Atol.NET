@@ -21,26 +21,17 @@ public class DefaultViewSerializer : IAtolViewSerializer
     public T? GetView<T>()
     {
         var jsonObject = new JsonObject();
-        var type = typeof(T);
-        var properties = type.GetProperties();
+        var properties = typeof(T)?.GetProperties();
 
         foreach (var property in properties)
         {
             var attribute = property.GetCustomAttribute(typeof(ConstantAttribute)) as ConstantAttribute;
 
-            IAtolDataProvider? provider = default;
+            var provider = property.PropertyType.IsEnum
+                ? _dataProviders.FirstOrDefault(x => x.GetResultType() == typeof(int))
+                : _dataProviders.FirstOrDefault(x => x.GetResultType() == property.PropertyType);
             
-            if (property.PropertyType.IsEnum)
-            {
-                provider = _dataProviders.FirstOrDefault(x => x.GetResultType() == typeof(int))!;
-                jsonObject.Add(property.Name, JsonValue.Create(provider.GetData(attribute.Constant)));
-                
-                CheckAndThrowIfError();
-                
-                continue;
-            }
             
-            provider = _dataProviders.FirstOrDefault(x => x.GetResultType() == attribute.ReturningType);
             jsonObject.Add(property.Name, JsonValue.Create(provider.GetData(attribute.Constant)));
             
             CheckAndThrowIfError();
