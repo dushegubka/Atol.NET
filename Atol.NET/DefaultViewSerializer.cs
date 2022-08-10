@@ -29,8 +29,8 @@ public class DefaultViewSerializer : IAtolViewSerializer
                             ?? throw new InvalidOperationException("Property is null");
 
             var provider = property.PropertyType.IsEnum
-                ? _dataProviders.FirstOrDefault(x => x.GetResultType() == typeof(int))
-                : _dataProviders.FirstOrDefault(x => x.GetResultType() == property.PropertyType)
+                ? _dataProviders?.FirstOrDefault(x => x.GetResultType() == typeof(int))
+                : _dataProviders?.FirstOrDefault(x => x.GetResultType() == property.PropertyType)
                 ?? throw new InvalidOperationException($"No data provider found for this type");
             
             
@@ -44,7 +44,7 @@ public class DefaultViewSerializer : IAtolViewSerializer
 
     public T GetValueByConstant<T>(int contant)
     {
-        var provider = _dataProviders.FirstOrDefault(x => x.GetResultType() == typeof(T));
+        var provider = _dataProviders?.FirstOrDefault(x => x.GetResultType() == typeof(T));
 
         var result = (T)provider.GetData(contant);
         
