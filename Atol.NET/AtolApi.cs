@@ -3,7 +3,6 @@ using Atol.NET.Abstractions;
 using Atol.NET.Abstractions.Categories;
 using Atol.NET.Categories;
 using Atol.NET.DataProviders;
-using Atol.NET.Exceptions;
 using Atol.NET.Models;
 using Atol.NET.Models.Responses;
 
@@ -14,7 +13,6 @@ public class AtolApi : IAtolApi
     private readonly IFptr _kkt;
     private IEnumerable<IAtolDataProvider>? _dataProviders;
     private IKktRequestService _requestService;
-
     public AtolApi()
     {
         _kkt = new Fptr();
@@ -118,12 +116,10 @@ public class AtolApi : IAtolApi
     public IFiscalStorageCategory FiscalStorage { get; private set; }
     
     /// <inheritdoc />
-    public bool IsConnected { get; private set; }
+    public bool IsConnected => _kkt.isOpened();
 
     private void Initialize()
     {
-        IsConnected = _kkt.isOpened();
-        
         _dataProviders = new List<IAtolDataProvider>()
         {
             new IntAtolDataProvider(_kkt),
