@@ -10,6 +10,7 @@ public class KktRequestService : IKktRequestService
     private readonly IFptr _kkt;
     private readonly IAtolViewSerializer _serializer;
 
+    //TODO: добавить сброс параметров IFptr после каждого запроса
     public KktRequestService(IFptr kkt, IAtolViewSerializer serializer)
     {
         _kkt = kkt;

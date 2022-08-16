@@ -114,7 +114,9 @@ public class AtolApi : IAtolApi
     
     /// <inheritdoc />
     public IFiscalStorageCategory FiscalStorage { get; private set; }
-    
+
+    public IPrinterCategory Printer { get; private set; }
+
     /// <inheritdoc />
     public bool IsConnected => _kkt.isOpened();
 
@@ -137,5 +139,6 @@ public class AtolApi : IAtolApi
     private void InitializerCategories()
     {
         FiscalStorage = new FiscalStorageCategory(_kkt, _requestService);
+        Printer = new PrinterCategory(_kkt, _requestService);
     }
 }

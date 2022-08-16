@@ -63,6 +63,11 @@ public interface IAtolApi
     IFiscalStorageCategory FiscalStorage { get; }
     
     /// <summary>
+    /// Категория для работы с печатным маханизмом ККТ
+    /// </summary>
+    IPrinterCategory Printer { get; }
+
+    /// <summary>
     /// Подключена ли ККТ
     /// </summary>
     bool IsConnected { get; }
