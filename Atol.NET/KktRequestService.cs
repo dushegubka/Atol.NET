@@ -75,6 +75,10 @@ public class KktRequestService : IKktRequestService
                 }
             };
         }
+        finally
+        {
+            _kkt.resetParams();
+        }
     }
 
     public KktResponse<T> GetDataByConstant<T>(int constant)
@@ -82,7 +86,7 @@ public class KktRequestService : IKktRequestService
         try
         {
             var response = _serializer.GetValueByConstant<T>(constant);
-            
+
             return new KktResponse<T>
             {
                 Data = response,
@@ -105,6 +109,10 @@ public class KktRequestService : IKktRequestService
                     Description = e.Message
                 }
             };
+        }
+        finally
+        {
+            _kkt.resetParams();
         }
     }
 
