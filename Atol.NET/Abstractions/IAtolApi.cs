@@ -66,6 +66,11 @@ public interface IAtolApi
     /// Категория для работы с печатным маханизмом ККТ
     /// </summary>
     IPrinterCategory Printer { get; }
+    
+    /// <summary>
+    /// Категория для работы с отчетами
+    /// </summary>
+    IReportsCategory Reports { get; }
 
     /// <summary>
     /// Подключена ли ККТ
