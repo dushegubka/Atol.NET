@@ -1,4 +1,5 @@
 ﻿using Atol.NET.Abstractions.Categories;
+using Atol.NET.Abstractions.Connectors;
 using Atol.NET.Models;
 using Atol.NET.Models.Responses;
 
@@ -6,6 +7,10 @@ namespace Atol.NET.Abstractions;
 
 public interface IAtolApi
 {
+    IFluentConnector ConnectBy { get; }
+
+    KktBaseResponse Disconnect();
+    
     /// <summary>
     /// Возвращает общую информацию о ККТ
     /// </summary>
