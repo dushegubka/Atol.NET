@@ -1,9 +1,11 @@
 ﻿using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
 using Atol.NET.Abstractions.Categories;
+using Atol.NET.Abstractions.Connectors;
 using Atol.NET.Categories;
 using Atol.NET.DataProviders;
 using Atol.NET.Models;
+using Atol.NET.Models.Connectors;
 using Atol.NET.Models.Responses;
 
 namespace Atol.NET;
@@ -16,7 +18,6 @@ public class AtolApi : IAtolApi
     public AtolApi()
     {
         _kkt = new Fptr();
-        _kkt.open();
 
         Initialize();
     }
@@ -24,7 +25,6 @@ public class AtolApi : IAtolApi
     public AtolApi(string libraryPath)
     {
         _kkt = new Fptr(libraryPath);
-        _kkt.open();
 
         Initialize();
     }
@@ -32,9 +32,18 @@ public class AtolApi : IAtolApi
     public AtolApi(string id, string libraryPath)
     {
         _kkt = new Fptr(id, libraryPath);
-        _kkt.open();
         
         Initialize();
+    }
+
+    public IFluentConnector ConnectBy { get; private set; }
+
+    public KktBaseResponse Disconnect()
+    {
+        return _requestService.SendRequest(() =>
+        {
+            _kkt.close();
+        });
     }
 
     /// <inheritdoc />
@@ -123,7 +132,6 @@ public class AtolApi : IAtolApi
 
     /// <inheritdoc />
     public bool IsConnected => _kkt.isOpened();
-
     private void Initialize()
     {
         _dataProviders = new List<IAtolDataProvider>()
@@ -137,6 +145,9 @@ public class AtolApi : IAtolApi
         };
         Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
         _requestService = new KktRequestService(_kkt, Serializer);
+
+        ConnectBy = new FluentConnector(_kkt, _requestService);
+        
         InitializerCategories();
     }
 
