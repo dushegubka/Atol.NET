@@ -129,6 +129,9 @@ public class AtolApi : IAtolApi
     
     /// <inheritdoc />
     public IReportsCategory Reports { get; private set; }
+    
+    /// <inheritdoc />
+    public ISettingsCategory Settings { get; private set; }
 
     /// <inheritdoc />
     public bool IsConnected => _kkt.isOpened();
@@ -143,6 +146,7 @@ public class AtolApi : IAtolApi
             new DoubleAtolDataProvider(_kkt),
             new ByteAtolDataProvider(_kkt)
         };
+        
         Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
         _requestService = new KktRequestService(_kkt, Serializer);
 
@@ -156,5 +160,6 @@ public class AtolApi : IAtolApi
         FiscalStorage = new FiscalStorageCategory(_kkt, _requestService);
         Printer = new PrinterCategory(_kkt, _requestService);
         Reports = new ReportsCategory(_kkt, _requestService);
+        Settings = new SettingsCategory(_kkt, _requestService);
     }
 }

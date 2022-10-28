@@ -76,6 +76,11 @@ public interface IAtolApi
     /// Категория для работы с отчетами
     /// </summary>
     IReportsCategory Reports { get; }
+    
+    /// <summary>
+    /// Категория для работы с настройками ККТ
+    /// </summary>
+    ISettingsCategory Settings { get; }
 
     /// <summary>
     /// Подключена ли ККТ
