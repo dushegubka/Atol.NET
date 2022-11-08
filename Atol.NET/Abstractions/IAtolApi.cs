@@ -78,6 +78,11 @@ public interface IAtolApi
     IReportsCategory Reports { get; }
     
     /// <summary>
+    /// Категория для работы с регистрационными операциями ФН
+    /// </summary>
+    IRegistrationCategory Registration { get; }
+    
+    /// <summary>
     /// Категория для работы с настройками ККТ
     /// </summary>
     ISettingsCategory Settings { get; }
