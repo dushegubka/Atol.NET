@@ -1,5 +1,4 @@
-﻿using Atol.Drivers10.Fptr;
-using Atol.NET.Abstractions;
+﻿using Atol.NET.Abstractions;
 using Atol.NET.Exceptions;
 using Atol.NET.Models.Responses;
 
@@ -7,16 +6,16 @@ namespace Atol.NET;
 
 public class KktRequestService : IKktRequestService
 {
-    private readonly IFptr _kkt;
+    private readonly IKktDriver _kkt;
     private readonly IAtolViewSerializer _serializer;
 
     //TODO: добавить сброс параметров IFptr после каждого запроса
-    public KktRequestService(IFptr kkt, IAtolViewSerializer serializer)
+    public KktRequestService(IKktDriver kkt, IAtolViewSerializer serializer)
     {
         _kkt = kkt;
         _serializer = serializer;
     }
-    
+
     public KktBaseResponse SendRequest(Action action)
     {
         try
@@ -77,7 +76,7 @@ public class KktRequestService : IKktRequestService
         }
         finally
         {
-            _kkt.resetParams();
+            _kkt.ResetParams();
         }
     }
 
@@ -91,7 +90,7 @@ public class KktRequestService : IKktRequestService
             {
                 Data = response,
                 IsSuccess = true,
-                Error = new KktResponseError()
+                Error = new KktResponseError
                 {
                     Code = 0,
                     Description = string.Empty
@@ -112,22 +111,22 @@ public class KktRequestService : IKktRequestService
         }
         finally
         {
-            _kkt.resetParams();
+            _kkt.ResetParams();
         }
     }
 
     private void CheckAndThrowIfError()
     {
-        var result = _kkt.errorCode();
+        var result = _kkt.ErrorCode();
 
-        if (result == 0) 
+        if (result == 0)
             return;
-        
-        var message = _kkt.errorDescription();
+
+        var message = _kkt.ErrorDescription();
 
         // сбрасываем ошибку, чтобы не уйти в бесконечную ошибку (драйвер не сбрасывает самостоятельно ошибки при вызове методов)
-        _kkt.resetError();
-        
+        _kkt.ResetError();
+
         throw new AtolException(message, result);
     }
 }

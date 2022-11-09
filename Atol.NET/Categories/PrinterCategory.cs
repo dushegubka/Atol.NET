@@ -1,5 +1,4 @@
-﻿using Atol.Drivers10.Fptr;
-using Atol.NET.Abstractions;
+﻿using Atol.NET.Abstractions;
 using Atol.NET.Abstractions.Categories;
 using Atol.NET.Enums;
 using Atol.NET.Models;
@@ -9,11 +8,11 @@ namespace Atol.NET.Categories;
 
 public class PrinterCategory : IPrinterCategory
 {
-    private readonly IFptr _kkt;
+    private readonly IKktDriver _kkt;
     private readonly IKktRequestService _requestService;
 
     public PrinterCategory(
-        IFptr kkt, 
+        IKktDriver kkt,
         IKktRequestService requestService)
     {
         _kkt = kkt;
@@ -23,18 +22,12 @@ public class PrinterCategory : IPrinterCategory
     /// <inheritdoc />
     public KktBaseResponse FeedLine()
     {
-        return _requestService.SendRequest(() =>
-        {
-            _kkt.lineFeed();
-        });
+        return _requestService.SendRequest(() => { _kkt.LineFeed(); });
     }
 
     public KktBaseResponse PrintCliche()
     {
-        return _requestService.SendRequest(() =>
-        {
-            _kkt.printCliche();
-        });
+        return _requestService.SendRequest(() => { _kkt.PrintCliche(); });
     }
 
     /// <inheritdoc />
@@ -42,8 +35,8 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_TEXT, text);
-            _kkt.printText();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_TEXT, text);
+            _kkt.PrintText();
         });
     }
 
@@ -52,28 +45,29 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_TEXT, options.Text);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.TextAlignment);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_FONT, options.FontId);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_FONT_DOUBLE_WIDTH, options.DoubleWidth);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_FONT_DOUBLE_HEIGHT, options.DoubleHeight);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_TEXT_WRAP, (int)options.TextWrap);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_LINESPACING, options.LineSpacing);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BRIGHTNESS, options.Brightness);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
-            _kkt.printText();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_TEXT, options.Text);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.TextAlignment);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_FONT, options.FontId);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_FONT_DOUBLE_WIDTH, options.DoubleWidth);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_FONT_DOUBLE_HEIGHT, options.DoubleHeight);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_TEXT_WRAP, (int)options.TextWrap);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_LINESPACING, options.LineSpacing);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BRIGHTNESS, options.Brightness);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
+            _kkt.PrintText();
         });
     }
 
     /// <inheritdoc />
-    public KktBaseResponse PrintBarcode(string text, BarcodeType barcodeType = BarcodeType.EAN13, Defer defer = Defer.None)
+    public KktBaseResponse PrintBarcode(string text, BarcodeType barcodeType = BarcodeType.EAN13,
+        Defer defer = Defer.None)
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE, text);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)barcodeType);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)defer);
-            _kkt.printBarcode();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE, text);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)barcodeType);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)defer);
+            _kkt.PrintBarcode();
         });
     }
 
@@ -82,10 +76,10 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE, text);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)qrType);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)defer);
-            _kkt.printBarcode();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE, text);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)qrType);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)defer);
+            _kkt.PrintBarcode();
         });
     }
 
@@ -94,16 +88,16 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE, options.Text);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)options.BarcodeType);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.Alignment);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_SCALE, options.Scale);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_LEFT_MARGIN, options.LeftMargin);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_INVERT, options.ColorInvert);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_HEIGHT, options.Height);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_PRINT_TEXT, options.PrintText);
-            _kkt.printBarcode();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE, options.Text);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)options.BarcodeType);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.Alignment);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_SCALE, options.Scale);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_LEFT_MARGIN, options.LeftMargin);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_INVERT, options.ColorInvert);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_HEIGHT, options.Height);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_PRINT_TEXT, options.PrintText);
+            _kkt.PrintBarcode();
         });
     }
 
@@ -112,16 +106,16 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE, options.Text);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)options.QrType);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.Alignment);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_SCALE, options.Scale);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_LEFT_MARGIN, options.LeftMargin);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_INVERT, options.ColorInvert);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_CORRECTION, options.Correction);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_BARCODE_VERSION, options.Version);
-            _kkt.printBarcode();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE, options.Text);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_TYPE, (int)options.QrType);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.Alignment);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_SCALE, options.Scale);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_LEFT_MARGIN, options.LeftMargin);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_INVERT, options.ColorInvert);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_CORRECTION, options.Correction);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_BARCODE_VERSION, options.Version);
+            _kkt.PrintBarcode();
         });
     }
 
@@ -130,20 +124,21 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_FILENAME, imagePath);
-            _kkt.printPicture();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_FILENAME, imagePath);
+            _kkt.PrintPicture();
         });
     }
 
-    public KktBaseResponse PrintImageFromMemory(int imageNumber, int leftMargin, Defer defer, TextAlignment alignment = TextAlignment.Center)
+    public KktBaseResponse PrintImageFromMemory(int imageNumber, int leftMargin, Defer defer,
+        TextAlignment alignment = TextAlignment.Center)
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_PICTURE_NUMBER, imageNumber);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_LEFT_MARGIN, leftMargin);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)alignment);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)defer);
-            _kkt.printPictureByNumber();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_PICTURE_NUMBER, imageNumber);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_LEFT_MARGIN, leftMargin);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)alignment);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)defer);
+            _kkt.PrintPictureByNumber();
         });
     }
 
@@ -152,13 +147,13 @@ public class PrinterCategory : IPrinterCategory
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_PIXEL_BUFFER, options.PixelBuffer);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_WIDTH, options.Width);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.Alignment);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_SCALE_PERCENT, options.ScalePercent);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_REPEAT_NUMBER, options.RepeatNumber);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
-            _kkt.printPixelBuffer();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_PIXEL_BUFFER, options.PixelBuffer);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_WIDTH, options.Width);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_ALIGNMENT, (int)options.Alignment);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_SCALE_PERCENT, options.ScalePercent);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_REPEAT_NUMBER, options.RepeatNumber);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DEFER, (int)options.Defer);
+            _kkt.PrintPixelBuffer();
         });
     }
 }
