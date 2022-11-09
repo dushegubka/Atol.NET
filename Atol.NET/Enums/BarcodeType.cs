@@ -13,5 +13,5 @@ public enum BarcodeType
     ITF,
     ITF14,
     Gs1128,
-    Code39Extended,
+    Code39Extended
 }
