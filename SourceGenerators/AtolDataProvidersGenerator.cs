@@ -27,12 +27,12 @@ namespace SourceGenerators
 
             _methodsNames = new Dictionary<string, string>
             {
-                {"Int32", "getParamInt"},
-                {"String", "getParamString"},
-                {"DateTime", "getParamDateTime"},
-                {"Double", "getParamDouble"},
-                {"Boolean", "getParamBool"},
-                {"Byte[]", "getParamByteArray"}
+                {"Int32", "GetParamInt"},
+                {"String", "GetParamString"},
+                {"DateTime", "GetParamDateTime"},
+                {"Double", "GetParamDouble"},
+                {"Boolean", "GetParamBool"},
+                {"Byte[]", "GetParamByteArray"}
             };
         }
 
@@ -43,16 +43,15 @@ namespace SourceGenerators
                 var className = $"{GetLettersFromString(type.Name)}AtolDataProvider";
                 var source = string.Format(@"using System;
 using System.Collections.Generic;
-using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
 
 namespace Atol.NET.DataProviders
 {{
     public class {0} : IAtolDataProvider
     {{
-        private readonly IFptr _kkt;
+        private readonly IKktDriver _kkt;
         
-        public {0}(IFptr kkt)
+        public {0}(IKktDriver kkt)
         {{
             _kkt = kkt;
         }}

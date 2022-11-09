@@ -1,4 +1,3 @@
-using Atol.Drivers10.Fptr;
 using Atol.NET.Abstractions;
 using Atol.NET.Abstractions.Categories;
 using Atol.NET.Enums;
@@ -9,11 +8,11 @@ namespace Atol.NET.Categories;
 
 public class RegistrationCategory : IRegistrationCategory
 {
-    private readonly IFptr _kkt;
+    private readonly IKktDriver _kkt;
     private readonly IKktRequestService _requestService;
 
     public RegistrationCategory(
-        IFptr kkt,
+        IKktDriver kkt,
         IKktRequestService requestService)
     {
         _kkt = kkt;
@@ -22,60 +21,60 @@ public class RegistrationCategory : IRegistrationCategory
 
     public KktBaseResponse Register(RegistrationSettings settings)
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_OPERATION_TYPE, Constants.LIBFPTR_FNOP_REGISTRATION);
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_OPERATION_TYPE, Constants.LIBFPTR_FNOP_REGISTRATION);
 
         SetRegistrationSettings(settings, RegistrationType.Registration);
 
-        var result = _requestService.SendRequest(() => { _kkt.fnOperation(); });
+        var result = _requestService.SendRequest(() => { _kkt.FnOperation(); });
 
         if (!result.IsSuccess)
             return result;
 
-        var documentClosed = _requestService.SendRequest(() => { _kkt.checkDocumentClosed(); });
+        var documentClosed = _requestService.SendRequest(() => { _kkt.CheckDocumentClosed(); });
 
         return documentClosed;
     }
 
     public KktBaseResponse ReRegister(RegistrationSettings settings)
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_OPERATION_TYPE, Constants.LIBFPTR_FNOP_CHANGE_PARAMETERS);
-        
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_OPERATION_TYPE, Constants.LIBFPTR_FNOP_CHANGE_PARAMETERS);
+
         SetRegistrationSettings(settings, RegistrationType.ReRegistration);
-        
-        var result = _requestService.SendRequest(() => { _kkt.fnOperation(); });
-        
+
+        var result = _requestService.SendRequest(() => { _kkt.FnOperation(); });
+
         if (!result.IsSuccess)
             return result;
-        
-        var documentClosed = _requestService.SendRequest(() => { _kkt.checkDocumentClosed(); });
-        
+
+        var documentClosed = _requestService.SendRequest(() => { _kkt.CheckDocumentClosed(); });
+
         return documentClosed;
     }
 
     public KktBaseResponse CloseFiscalStorage(bool printReport)
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_FN_OPERATION_TYPE, Constants.LIBFPTR_FNOP_CLOSE_ARCHIVE);
-        _kkt.setParam(Constants.LIBFPTR_PARAM_REPORT_ELECTRONICALLY, !printReport);
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_OPERATION_TYPE, Constants.LIBFPTR_FNOP_CLOSE_ARCHIVE);
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_REPORT_ELECTRONICALLY, !printReport);
 
-        return _requestService.SendRequest(() => { _kkt.fnOperation(); });
+        return _requestService.SendRequest(() => { _kkt.FnOperation(); });
     }
 
     private void SetRegistrationSettings(RegistrationSettings settings, RegistrationType registrationType)
     {
         if (registrationType == RegistrationType.Registration)
         {
-            _kkt.setParam(1018, settings.Inn);
-            _kkt.setParam(1037, settings.KktRegistrationNumber);
+            _kkt.SetParam(1018, settings.Inn);
+            _kkt.SetParam(1037, settings.KktRegistrationNumber);
         }
-        
-        _kkt.setParam((int) RegistrationParam.FnsSiteUrl, settings.FnsSiteUrl);
-        _kkt.setParam(1009, settings.BillingAddress);
-        _kkt.setParam(1048, settings.Username);
-        _kkt.setParam(1062, ConcateTaxSystems(settings.TaxSystems!));
-        _kkt.setParam(1117, settings.Email);
-        _kkt.setParam(1057, ConcateAgentSigns(settings.AgentSigns!));
-        _kkt.setParam(1187, settings.BillingPlace);
-        _kkt.setParam(1209, (int)settings.FfdVersion);
+
+        _kkt.SetParam((int)RegistrationParam.FnsSiteUrl, settings.FnsSiteUrl);
+        _kkt.SetParam(1009, settings.BillingAddress);
+        _kkt.SetParam(1048, settings.Username);
+        _kkt.SetParam(1062, ConcateTaxSystems(settings.TaxSystems!));
+        _kkt.SetParam(1117, settings.Email);
+        _kkt.SetParam(1057, ConcateAgentSigns(settings.AgentSigns!));
+        _kkt.SetParam(1187, settings.BillingPlace);
+        _kkt.SetParam(1209, (int)settings.FfdVersion);
     }
 
     //TODO: переделать в обобщенный метод
@@ -94,11 +93,11 @@ public class RegistrationCategory : IRegistrationCategory
 
         return result;
     }
-    
+
     private int ConcateReRegistrationReasons(List<ReRegistrationReason> reRegistrationReasons)
     {
         var result = 0;
-        foreach (var reRegistrationReason in reRegistrationReasons) 
+        foreach (var reRegistrationReason in reRegistrationReasons)
             result |= (int)reRegistrationReason;
 
         return result;

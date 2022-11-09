@@ -1,5 +1,4 @@
-﻿using Atol.Drivers10.Fptr;
-using Atol.NET.Abstractions;
+﻿using Atol.NET.Abstractions;
 using Atol.NET.Abstractions.Categories;
 using Atol.NET.Abstractions.Connectors;
 using Atol.NET.Categories;
@@ -12,27 +11,28 @@ namespace Atol.NET;
 
 public class AtolApi : IAtolApi
 {
-    private readonly IFptr _kkt;
+    private readonly IKktDriver _kkt;
     private IEnumerable<IAtolDataProvider>? _dataProviders;
     private IKktRequestService _requestService;
+
     public AtolApi()
     {
-        _kkt = new Fptr();
+        _kkt = new KktDriver();
 
         Initialize();
     }
 
     public AtolApi(string libraryPath)
     {
-        _kkt = new Fptr(libraryPath);
+        _kkt = new KktDriver(libraryPath);
 
         Initialize();
     }
 
     public AtolApi(string id, string libraryPath)
     {
-        _kkt = new Fptr(id, libraryPath);
-        
+        _kkt = new KktDriver(id, libraryPath);
+
         Initialize();
     }
 
@@ -40,17 +40,14 @@ public class AtolApi : IAtolApi
 
     public KktBaseResponse Disconnect()
     {
-        return _requestService.SendRequest(() =>
-        {
-            _kkt.close();
-        });
+        return _requestService.SendRequest(() => { _kkt.Close(); });
     }
 
     /// <inheritdoc />
     public KktResponse<KktGeneralInfo> GetGeneralInfo()
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
-        _kkt.queryData();
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
+        _kkt.QueryData();
 
         var result = _requestService.GetData<KktGeneralInfo>();
 
@@ -60,9 +57,9 @@ public class AtolApi : IAtolApi
     /// <inheritdoc />
     public KktResponse<KktLicenseState> GetLicenseState(int licenseId)
     {
-        _kkt.setParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_LICENSE_ACTIVATED);
-        _kkt.setParam(Constants.LIBFPTR_PARAM_LICENSE_NUMBER, licenseId);
-        _kkt.queryData();
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_LICENSE_ACTIVATED);
+        _kkt.SetParam(Constants.LIBFPTR_PARAM_LICENSE_NUMBER, licenseId);
+        _kkt.QueryData();
 
         return _requestService.GetData<KktLicenseState>();
     }
@@ -70,41 +67,35 @@ public class AtolApi : IAtolApi
     /// <inheritdoc />
     public KktBaseResponse PowerOff()
     {
-        return _requestService.SendRequest(() =>
-        {
-            _kkt.devicePoweroff();
-        });
+        return _requestService.SendRequest(() => { _kkt.DevicePoweroff(); });
     }
-    
+
     /// <inheritdoc />
     public KktBaseResponse Reboot()
     {
         var result = _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_PRINT_REPORT, false);
-            _kkt.deviceReboot();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_PRINT_REPORT, false);
+            _kkt.DeviceReboot();
         });
 
         return result;
     }
-    
+
     /// <inheritdoc />
     public KktBaseResponse Beep()
     {
-        return _requestService.SendRequest(() =>
-        {
-            _kkt.beep();
-        });
+        return _requestService.SendRequest(() => { _kkt.Beep(); });
     }
-    
+
     /// <inheritdoc />
     public KktBaseResponse Beep(int frequency, int duration)
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_FREQUENCY, frequency);
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DURATION, duration);
-            _kkt.beep();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_FREQUENCY, frequency);
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DURATION, duration);
+            _kkt.Beep();
         });
     }
 
@@ -113,34 +104,35 @@ public class AtolApi : IAtolApi
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.setParam(Constants.LIBFPTR_PARAM_DATE_TIME, dateTime);
-            _kkt.writeDateTime();
+            _kkt.SetParam(Constants.LIBFPTR_PARAM_DATE_TIME, dateTime);
+            _kkt.WriteDateTime();
         });
     }
 
     /// <inheritdoc />
     public IAtolViewSerializer? Serializer { get; private set; }
-    
+
     /// <inheritdoc />
     public IFiscalStorageCategory FiscalStorage { get; private set; }
 
     /// <inheritdoc />
     public IPrinterCategory Printer { get; private set; }
-    
+
     /// <inheritdoc />
     public IReportsCategory Reports { get; private set; }
 
     /// <inheritdoc />
     public IRegistrationCategory Registration { get; set; }
-    
+
     /// <inheritdoc />
     public ISettingsCategory Settings { get; private set; }
 
     /// <inheritdoc />
-    public bool IsConnected => _kkt.isOpened();
+    public bool IsConnected => _kkt.IsOpened();
+
     private void Initialize()
     {
-        _dataProviders = new List<IAtolDataProvider>()
+        _dataProviders = new List<IAtolDataProvider>
         {
             new IntAtolDataProvider(_kkt),
             new StringAtolDataProvider(_kkt),
@@ -149,12 +141,12 @@ public class AtolApi : IAtolApi
             new DoubleAtolDataProvider(_kkt),
             new ByteAtolDataProvider(_kkt)
         };
-        
+
         Serializer = new DefaultViewSerializer(_dataProviders, _kkt);
         _requestService = new KktRequestService(_kkt, Serializer);
 
         ConnectBy = new FluentConnector(_kkt, _requestService);
-        
+
         InitializerCategories();
     }
 
