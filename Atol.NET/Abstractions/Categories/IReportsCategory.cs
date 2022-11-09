@@ -5,127 +5,127 @@ namespace Atol.NET.Abstractions.Categories;
 public interface IReportsCategory
 {
     /// <summary>
-    /// Печать X-отчета
+    ///     Печать X-отчета
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintXReport();
 
     /// <summary>
-    /// Печать копии последнего документа
+    ///     Печать копии последнего документа
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintLastDocument();
-    
+
     /// <summary>
-    /// Отчет о состоянии расчетов
+    ///     Отчет о состоянии расчетов
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintOfdExchangeStatus();
 
     /// <summary>
-    /// Демо-печать
+    ///     Демо-печать
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintDemo();
 
     /// <summary>
-    /// Печать информации о ККТ
+    ///     Печать информации о ККТ
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintKktInformation();
 
     /// <summary>
-    /// Диагностика соединения с ОФД
+    ///     Диагностика соединения с ОФД
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintOfdStatus();
-    
+
     /// <summary>
-    /// Отчет количеств
+    ///     Отчет количеств
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintQuantityReport();
-    
+
     /// <summary>
-    /// Отчет по секциям
+    ///     Отчет по секциям
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintDepartmentsReport();
 
     /// <summary>
-    /// Отчет по кассирам
+    ///     Отчет по кассирам
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintOperatorsReport();
-    
+
     /// <summary>
-    /// Отчет по часам
+    ///     Отчет по часам
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintHoursReport();
 
     /// <summary>
-    /// Печать итогов регистрации / перерегистрации
+    ///     Печать итогов регистрации / перерегистрации
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintFnRegistrationReport();
-    
+
     /// <summary>
-    /// Счетчики итогов смены
+    ///     Счетчики итогов смены
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintShiftTotalCounters();
 
     /// <summary>
-    /// Счетчики итогов ФН
+    ///     Счетчики итогов ФН
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintFnTotalCounters();
-    
+
     /// <summary>
-    /// Счетчики по непереданным документам
+    ///     Счетчики по непереданным документам
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintNotSentDocumentCounters();
 
     /// <summary>
-    /// Отчет по товарам по СНО
+    ///     Отчет по товарам по СНО
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintCommoditiesByTaxationTypes();
 
     /// <summary>
-    /// Отчет по товарам по отделам
+    ///     Отчет по товарам по отделам
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintCommoditiesByDepartments();
 
     /// <summary>
-    /// Отчет по товарам по суммам
+    ///     Отчет по товарам по суммам
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintCommoditiesBySums();
 
     /// <summary>
-    /// Начать служебный отчет
+    ///     Начать служебный отчет
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintServiceReport();
-    
+
     /// <summary>
-    /// Отчет по скидкам
+    ///     Отчет по скидкам
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintDiscountsReport();
-    
+
     /// <summary>
-    /// Печать нераспечатанных отчетов о закрытии смены
+    ///     Печать нераспечатанных отчетов о закрытии смены
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintCloseShiftReport();
 
     /// <summary>
-    /// Печать документа из ФН
+    ///     Печать документа из ФН
     /// </summary>
     /// <returns>KktBaseResponse</returns>
     KktBaseResponse PrintDocumentFromFn(int documentNumber);
