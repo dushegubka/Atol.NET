@@ -5,17 +5,17 @@ namespace Atol.NET.Models;
 public class BarcodeOptions : CodeOptionsBase
 {
     /// <summary>
-    /// Высота штрихкода, пикс.
+    ///     Высота штрихкода, пикс.
     /// </summary>
     public int Height { get; set; } = 30;
 
     /// <summary>
-    /// Флаг печати данных ШК
+    ///     Флаг печати данных ШК
     /// </summary>
     public bool PrintText { get; set; }
 
     /// <summary>
-    /// Тип штрихкода
+    ///     Тип штрихкода
     /// </summary>
     public BarcodeType BarcodeType { get; set; }
 }

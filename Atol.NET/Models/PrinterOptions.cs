@@ -11,14 +11,14 @@ public class PrinterOptions
     public TextWrap TextWrap { get; set; }
 
     public int FontId { get; set; } = 2;
-    
+
     public bool DoubleWidth { get; set; }
-    
+
     public bool DoubleHeight { get; set; }
 
     public int LineSpacing { get; set; }
-    
+
     public int Brightness { get; set; }
-    
+
     public Defer Defer { get; set; }
 }

@@ -1,5 +1,4 @@
-﻿using Atol.Drivers10.Fptr;
-using Atol.NET.Attributes;
+﻿using Atol.NET.Attributes;
 
 namespace Atol.NET.Models;
 

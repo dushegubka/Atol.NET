@@ -8,9 +8,9 @@ namespace Atol.NET;
 
 public class KktDriver : IKktDriver, IDisposable
 {
-    private IntPtr _mHandle = IntPtr.Zero;
-    private readonly int _symbolSize;
     private readonly Encoding _encoding;
+    private readonly int _symbolSize;
+    private IntPtr _mHandle = IntPtr.Zero;
 
     public KktDriver()
     {
@@ -23,13 +23,13 @@ public class KktDriver : IKktDriver, IDisposable
         {
             case -2:
                 throw new ArgumentException("Invalind [id] format");
-            case 0: 
+            case 0:
                 break;
             default:
                 throw new Exception("Can't create driver handle");
         }
     }
-    
+
     public KktDriver(string libraryPath)
     {
         _symbolSize = GetOsSymbolSize();
@@ -41,7 +41,7 @@ public class KktDriver : IKktDriver, IDisposable
         {
             case -2:
                 throw new ArgumentException("Invalind [id] format");
-            case 0: 
+            case 0:
                 break;
             default:
                 throw new Exception("Can't create driver handle");
@@ -52,18 +52,1013 @@ public class KktDriver : IKktDriver, IDisposable
     {
         _symbolSize = GetOsSymbolSize();
         _encoding = GetDefaultEncoding();
-        
+
         InitializeDriver(libraryPath);
 
         switch (CreateWithId(out _mHandle, _encoding.GetBytes(id)))
         {
             case -2:
                 throw new ArgumentException("Invalind [id] format");
-            case 0: 
+            case 0:
                 break;
             default:
                 throw new Exception("Can't create driver handle");
         }
+    }
+
+    public void Dispose()
+    {
+        Destroy();
+    }
+
+    public void Destroy()
+    {
+        if (!(_mHandle == IntPtr.Zero))
+            return;
+
+        Destroy(out _mHandle);
+    }
+
+    public string Version()
+    {
+        return Marshal.PtrToStringAnsi(GetVersionString())!;
+    }
+
+    public int LogWrite(string tag, int level, string message)
+    {
+        return LogWriteEx(_mHandle, GetBytes(tag), level, GetBytes(message));
+    }
+
+    public int ChangeLabel(string label)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int ShowProperties(int parentType, IntPtr parent)
+    {
+        return ShowProperties(_mHandle, parentType, parent);
+    }
+
+    public bool IsOpened()
+    {
+        return IsOpened(_mHandle);
+    }
+
+    public int ErrorCode()
+    {
+        return ErrorCode(_mHandle);
+    }
+
+    public string ErrorDescription()
+    {
+        var bufferSize = 128;
+        var buffer = new byte[_symbolSize * bufferSize];
+
+        var result = ErrorDescription(_mHandle, buffer, bufferSize);
+
+        if (result > bufferSize)
+        {
+            bufferSize = result;
+            buffer = new byte[_symbolSize * result];
+            ErrorDescription(_mHandle, buffer, bufferSize);
+        }
+
+        return GetString(buffer);
+    }
+
+    public void ResetError()
+    {
+        ResetError(_mHandle);
+    }
+
+    public int SetSettings(string settings)
+    {
+        return SetSettings(_mHandle, GetBytes(settings));
+    }
+
+    public string GetSettings()
+    {
+        var bufferSize = 128;
+        var buffer = new byte[_symbolSize * bufferSize];
+
+        var settings = GetSettings(_mHandle, buffer, bufferSize);
+
+        if (settings > bufferSize)
+        {
+            bufferSize = settings;
+            buffer = new byte[_symbolSize * settings];
+            GetSettings(_mHandle, buffer, bufferSize);
+        }
+
+        return _encoding.GetString(buffer, 0, settings * _symbolSize).TrimEnd(new char[1]);
+    }
+
+    public void SetSingleSetting(string key, string setting)
+    {
+        SetSingleSetting(_mHandle, _encoding.GetBytes(key), _encoding.GetBytes(setting));
+    }
+
+    public string GetSingleSetting(string key)
+    {
+        var bufferSize = 128;
+        var buffer = new byte[_symbolSize * bufferSize];
+        var singleSetting = GetSingleSetting(_mHandle, _encoding.GetBytes(key), buffer, bufferSize);
+
+        if (singleSetting > bufferSize)
+        {
+            bufferSize = singleSetting;
+            buffer = new byte[_symbolSize * singleSetting];
+            GetSingleSetting(_mHandle, _encoding.GetBytes(key), buffer, bufferSize);
+        }
+
+        return _encoding.GetString(buffer, 0, singleSetting * _symbolSize).TrimEnd(new char[1]);
+    }
+
+    public void SetParam(int paramId, uint value)
+    {
+        SetParamInt(_mHandle, paramId, value);
+    }
+
+    public void SetParam(int paramId, bool value)
+    {
+        SetParamBool(_mHandle, paramId, value);
+    }
+
+    public void SetParam(int paramId, double value)
+    {
+        SetParamDouble(_mHandle, paramId, value);
+    }
+
+    public void SetParam(int paramId, byte[] value)
+    {
+        SetParamByteArray(_mHandle, paramId, value, value.Length);
+    }
+
+    public void SetParam(int paramId, DateTime value)
+    {
+        SetParamDateTime(_mHandle, paramId, value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
+    }
+
+    public void SetParam(int paramId, string value)
+    {
+        SetParamString(_mHandle, paramId, GetBytes(value));
+    }
+
+    public void SetNonPrintableParam(int paramId, uint value)
+    {
+        SetNonPrintableParamInt(_mHandle, paramId, value);
+    }
+
+    public void SetNonPrintableParam(int paramId, bool value)
+    {
+        SetNonPrintableParamBool(_mHandle, paramId, value);
+    }
+
+    public void SetNonPrintableParam(int paramId, double value)
+    {
+        SetNonPrintableParamDouble(_mHandle, paramId, value);
+    }
+
+    public void SetNonPrintableParam(int paramId, byte[] value)
+    {
+        SetNonPrintableParamByteArray(_mHandle, paramId, value, value.Length);
+    }
+
+    public void SetNonPrintableParam(int paramId, DateTime value)
+    {
+        SetNonPrintableParamDateTime(_mHandle, paramId, value.Year, value.Month, value.Day, value.Hour, value.Minute,
+            value.Second);
+    }
+
+    public void SetNonPrintableParam(int paramId, string value)
+    {
+        SetNonPrintableParamString(_mHandle, paramId, GetBytes(value));
+    }
+
+    public void SetUserParam(int paramId, uint value)
+    {
+        SetUserParamInt(_mHandle, paramId, value);
+    }
+
+    public void SetUserParam(int paramId, bool value)
+    {
+        SetUserParamBool(_mHandle, paramId, value);
+    }
+
+    public void SetUserParam(int paramId, double value)
+    {
+        SetUserParamDouble(_mHandle, paramId, value);
+    }
+
+    public void SetUserParam(int paramId, byte[] value)
+    {
+        SetUserParamByteArray(_mHandle, paramId, value, value.Length);
+    }
+
+    public void SetUserParam(int paramId, DateTime value)
+    {
+        SetUserParamDateTime(_mHandle, paramId, value.Year, value.Month, value.Day, value.Hour, value.Minute,
+            value.Second);
+    }
+
+    public void SetUserParam(int paramId, string value)
+    {
+        SetUserParamString(_mHandle, paramId, GetBytes(value));
+    }
+
+    public uint GetParamInt(int paramId)
+    {
+        return GetParamInt(_mHandle, paramId);
+    }
+
+    public bool GetParamBool(int paramId)
+    {
+        return GetParamBool(_mHandle, paramId);
+    }
+
+    public double GetParamDouble(int paramId)
+    {
+        return GetParamDouble(_mHandle, paramId);
+    }
+
+    public byte[] GetParamByteArray(int paramId)
+    {
+        var bufferSize = 128;
+        var buffer = new byte[bufferSize];
+        var paramByteArray = GetParamByteArray(_mHandle, paramId, buffer, bufferSize);
+
+        if (paramByteArray > bufferSize)
+        {
+            bufferSize = paramByteArray;
+            buffer = new byte[bufferSize];
+            GetParamByteArray(_mHandle, paramId, buffer, bufferSize);
+        }
+
+        return buffer;
+    }
+
+    public DateTime GetParamDateTime(int paramId)
+    {
+        GetParamDateTime(
+            _mHandle,
+            paramId,
+            out var year,
+            out var month,
+            out var day,
+            out var hour,
+            out var minute,
+            out var second);
+
+        return new DateTime(year.ToInt32(), month.ToInt32(), day.ToInt32(), hour.ToInt32(), minute.ToInt32(),
+            second.ToInt32());
+    }
+
+    public string GetParamString(int paramId)
+    {
+        var bufferSize = 128;
+        var buffer = new byte[_symbolSize * bufferSize];
+        var paramString = GetParamString(_mHandle, paramId, buffer, bufferSize);
+
+        if (paramString > bufferSize)
+        {
+            bufferSize = paramString;
+            buffer = new byte[_symbolSize * paramString];
+            GetParamString(_mHandle, paramId, buffer, bufferSize);
+        }
+
+        return _encoding.GetString(buffer, 0, paramString * _symbolSize).TrimEnd(new char[1]);
+    }
+
+    public int ApplySingleSettings()
+    {
+        return ApplySingleSettings(_mHandle);
+    }
+
+    public int Open()
+    {
+        return Open(_mHandle);
+    }
+
+    public int Close()
+    {
+        return Close(_mHandle);
+    }
+
+    public int ResetParams()
+    {
+        return ResetParams(_mHandle);
+    }
+
+    public int RunCommand()
+    {
+        return RunCommand(_mHandle);
+    }
+
+    public int Beep()
+    {
+        return Beep(_mHandle);
+    }
+
+    public int OpenDrawer()
+    {
+        return OpenDrawer(_mHandle);
+    }
+
+    public int Cut()
+    {
+        return Cut(_mHandle);
+    }
+
+    public int DevicePoweroff()
+    {
+        return DevicePoweroff(_mHandle);
+    }
+
+    public int DeviceReboot()
+    {
+        return DeviceReboot(_mHandle);
+    }
+
+    public int OpenShift()
+    {
+        return OpenShift(_mHandle);
+    }
+
+    public int ResetSummary()
+    {
+        return ResetSummary(_mHandle);
+    }
+
+    public int InitDevice()
+    {
+        return InitDevice(_mHandle);
+    }
+
+    public int QueryData()
+    {
+        return QueryData(_mHandle);
+    }
+
+    public int CashIncome()
+    {
+        return CashIncome(_mHandle);
+    }
+
+    public int CashOutcome()
+    {
+        return CashOutcome(_mHandle);
+    }
+
+    public int OpenReceipt()
+    {
+        return OpenReceipt(_mHandle);
+    }
+
+    public int CancelReceipt()
+    {
+        return CancelReceipt(_mHandle);
+    }
+
+    public int CloseReceipt()
+    {
+        return CloseReceipt(_mHandle);
+    }
+
+    public int CheckDocumentClosed()
+    {
+        return CheckDocumentClosed(_mHandle);
+    }
+
+    public int ReceiptTotal()
+    {
+        return ReceiptTotal(_mHandle);
+    }
+
+    public int ReceiptTax()
+    {
+        return ReceiptTax(_mHandle);
+    }
+
+    public int Registration()
+    {
+        return Registration(_mHandle);
+    }
+
+    public int Payment()
+    {
+        return Payment(_mHandle);
+    }
+
+    public int Report()
+    {
+        return Report(_mHandle);
+    }
+
+    public int PrintText()
+    {
+        return PrintText(_mHandle);
+    }
+
+    public int PrintCliche()
+    {
+        return PrintCliche(_mHandle);
+    }
+
+    public int BeginNonfiscalDocument()
+    {
+        return BeginNonfiscalDocument(_mHandle);
+    }
+
+    public int EndNonfiscalDocument()
+    {
+        return EndNonfiscalDocument(_mHandle);
+    }
+
+    public int PrintBarcode()
+    {
+        return PrintBarcode(_mHandle);
+    }
+
+    public int PrintPicture()
+    {
+        return PrintPicture(_mHandle);
+    }
+
+    public int PrintPictureByNumber()
+    {
+        return PrintPictureByNumber(_mHandle);
+    }
+
+    public int UploadPictureFromFile()
+    {
+        return UploadPictureFromFile(_mHandle);
+    }
+
+    public int ClearPictures()
+    {
+        return ClearPictures(_mHandle);
+    }
+
+    public int WriteDeviceSettingRaw()
+    {
+        return WriteDeviceSettingRaw(_mHandle);
+    }
+
+    public int ReadDeviceSettingRaw()
+    {
+        return ReadDeviceSettingRaw(_mHandle);
+    }
+
+    public int CommitSettings()
+    {
+        return CommitSettings(_mHandle);
+    }
+
+    public int InitSettings()
+    {
+        return InitSettings(_mHandle);
+    }
+
+    public int ResetSettings()
+    {
+        return ResetSettings(_mHandle);
+    }
+
+    public int WriteDateTime()
+    {
+        return WriteDateTime(_mHandle);
+    }
+
+    public int WriteLicense()
+    {
+        return WriteLicense(_mHandle);
+    }
+
+    public int FnOperation()
+    {
+        return FnOperation(_mHandle);
+    }
+
+    public int FnQueryData()
+    {
+        return FnQueryData(_mHandle);
+    }
+
+    public int FnWriteAttributes()
+    {
+        return FnWriteAttributes(_mHandle);
+    }
+
+    public int ExternalDevicePowerOn()
+    {
+        return ExternalDevicePowerOn(_mHandle);
+    }
+
+    public int ExternalDevicePowerOff()
+    {
+        return ExternalDevicePowerOff(_mHandle);
+    }
+
+    public int ExternalDeviceWriteData()
+    {
+        return ExternalDeviceWriteData(_mHandle);
+    }
+
+    public int ExternalDeviceReadData()
+    {
+        return ExternalDeviceReadData(_mHandle);
+    }
+
+    public int OperatorLogin()
+    {
+        return OperatorLogin(_mHandle);
+    }
+
+    public int ProcessJson()
+    {
+        return ProcessJson(_mHandle);
+    }
+
+    public int ReadDeviceSetting()
+    {
+        return ReadDeviceSetting(_mHandle);
+    }
+
+    public int WriteDeviceSetting()
+    {
+        return WriteDeviceSetting(_mHandle);
+    }
+
+    public int BeginReadRecords()
+    {
+        return BeginReadRecords(_mHandle);
+    }
+
+    public int ReadNextRecord()
+    {
+        return ReadNextRecord(_mHandle);
+    }
+
+    public int EndReadRecords()
+    {
+        return EndReadRecords(_mHandle);
+    }
+
+    public int UserMemoryOperation()
+    {
+        return UserMemoryOperation(_mHandle);
+    }
+
+    public int ContinuePrint()
+    {
+        return ContinuePrint(_mHandle);
+    }
+
+    public int InitMgm()
+    {
+        return InitMgm(_mHandle);
+    }
+
+    public int UtilFormTlv()
+    {
+        return UtilFormTlv(_mHandle);
+    }
+
+    public int UtilFormNomenclature()
+    {
+        return UtilFormNomenclature(_mHandle);
+    }
+
+    public int UtilMapping()
+    {
+        return UtilMapping(_mHandle);
+    }
+
+    public int ReadModelFlags()
+    {
+        return ReadModelFlags(_mHandle);
+    }
+
+    public int LineFeed()
+    {
+        return LineFeed(_mHandle);
+    }
+
+    public int FlashFirmware()
+    {
+        return FlashFirmware(_mHandle);
+    }
+
+    public int SoftLockInit()
+    {
+        return SoftLockInit(_mHandle);
+    }
+
+    public int SoftLockQuerySessionCode()
+    {
+        return SoftLockQuerySessionCode(_mHandle);
+    }
+
+    public int SoftLockValidate()
+    {
+        return SoftLockValidate(_mHandle);
+    }
+
+    public int UtilCalcTax()
+    {
+        return UtilCalcTax(_mHandle);
+    }
+
+    public int DownloadPicture()
+    {
+        return DownloadPicture(_mHandle);
+    }
+
+    public int BluetoothRemovePairedDevices()
+    {
+        return BluetoothRemovePairedDevices(_mHandle);
+    }
+
+    public int UtilTagInfo()
+    {
+        return UtilTagInfo(_mHandle);
+    }
+
+    public int UtilContainerVersions()
+    {
+        return UtilContainerVersions(_mHandle);
+    }
+
+    public int ActivateLicenses()
+    {
+        return ActivateLicenses(_mHandle);
+    }
+
+    public int RemoveLicenses()
+    {
+        return RemoveLicenses(_mHandle);
+    }
+
+    public int EnterKeys()
+    {
+        return EnterKeys(_mHandle);
+    }
+
+    public int ValidateKeys()
+    {
+        return ValidateKeys(_mHandle);
+    }
+
+    public int EnterSerialNumber()
+    {
+        return EnterSerialNumber(_mHandle);
+    }
+
+    public int GetSerialNumberRequest()
+    {
+        return GetSerialNumberRequest(_mHandle);
+    }
+
+    public int UploadPixelBuffer()
+    {
+        return UploadPixelBuffer(_mHandle);
+    }
+
+    public int DownloadPixelBuffer()
+    {
+        return DownloadPixelBuffer(_mHandle);
+    }
+
+    public int PrintPixelBuffer()
+    {
+        return PrintPixelBuffer(_mHandle);
+    }
+
+    public int UtilConvertTagValue()
+    {
+        return UtilConvertTagValue(_mHandle);
+    }
+
+    public int ParseMarkingCode()
+    {
+        return ParseMarkingCode(_mHandle);
+    }
+
+    public int CallScript()
+    {
+        return CallScript(_mHandle);
+    }
+
+    public int SetHeaderLines()
+    {
+        return SetHeaderLines(_mHandle);
+    }
+
+    public int SetFooterLines()
+    {
+        return SetFooterLines(_mHandle);
+    }
+
+    public int UploadPictureCliche()
+    {
+        return UploadPictureCliche(_mHandle);
+    }
+
+    public int UploadPictureMemory()
+    {
+        return UploadPictureMemory(_mHandle);
+    }
+
+    public int UploadPixelBufferCliche()
+    {
+        return UploadPixelBufferCliche(_mHandle);
+    }
+
+    public int UploadPixelBufferMemory()
+    {
+        return UploadPixelBufferMemory(_mHandle);
+    }
+
+    public int ExecDriverScript()
+    {
+        return ExecDriverScript(_mHandle);
+    }
+
+    public int UploadDriverScript()
+    {
+        return UploadDriverScript(_mHandle);
+    }
+
+    public int ExecDriverScriptById()
+    {
+        return ExecDriverScriptById(_mHandle);
+    }
+
+    public int WriteUniversalCountersSettings()
+    {
+        return WriteUniversalCountersSettings(_mHandle);
+    }
+
+    public int ReadUniversalCountersSettings()
+    {
+        return ReadUniversalCountersSettings(_mHandle);
+    }
+
+    public int QueryUniversalCountersState()
+    {
+        return QueryUniversalCountersState(_mHandle);
+    }
+
+    public int ResetUniversalCounters()
+    {
+        return ResetUniversalCounters(_mHandle);
+    }
+
+    public int CacheUniversalCounters()
+    {
+        return CacheUniversalCounters(_mHandle);
+    }
+
+    public int ReadUniversalCounterSum()
+    {
+        return ReadUniversalCounterSum(_mHandle);
+    }
+
+    public int ReadUniversalCounterQuantity()
+    {
+        return ReadUniversalCounterQuantity(_mHandle);
+    }
+
+    public int ClearUniversalCountersCache()
+    {
+        return ClearUniversalCountersCache(_mHandle);
+    }
+
+    public int DisableOfdChannel()
+    {
+        return DisableOfdChannel(_mHandle);
+    }
+
+    public int EnableOfdChannel()
+    {
+        return EnableOfdChannel(_mHandle);
+    }
+
+    public int ValidateJson()
+    {
+        return ValidateJson(_mHandle);
+    }
+
+    public int ReflectionCall()
+    {
+        return ReflectionCall(_mHandle);
+    }
+
+    public int GetRemoteServerInfo()
+    {
+        return GetRemoteServerInfo(_mHandle);
+    }
+
+    public int BeginMarkingCodeValidation()
+    {
+        return BeginMarkingCodeValidation(_mHandle);
+    }
+
+    public int CancelMarkingCodeValidation()
+    {
+        return CancelMarkingCodeValidation(_mHandle);
+    }
+
+    public int GetMarkingCodeValidationStatus()
+    {
+        return GetMarkingCodeValidationStatus(_mHandle);
+    }
+
+    public int AcceptMarkingCode()
+    {
+        return AcceptMarkingCode(_mHandle);
+    }
+
+    public int DeclineMarkingCode()
+    {
+        return DeclineMarkingCode(_mHandle);
+    }
+
+    public int UpdateFnmKeys()
+    {
+        return UpdateFnmKeys(_mHandle);
+    }
+
+    public int WriteSalesNotice()
+    {
+        return WriteSalesNotice(_mHandle);
+    }
+
+    public int CheckMarkingCodeValidationsReady()
+    {
+        return CheckMarkingCodeValidationsReady(_mHandle);
+    }
+
+    public int ClearMarkingCodeValidationResult()
+    {
+        return ClearMarkingCodeValidationResult(_mHandle);
+    }
+
+    public int PingMarkingServer()
+    {
+        return PingMarkingServer(_mHandle);
+    }
+
+    public int GetMarkingServerStatus()
+    {
+        return GetMarkingServerStatus(_mHandle);
+    }
+
+    public int IsDriverLocked()
+    {
+        return IsDriverLocked(_mHandle);
+    }
+
+    public int GetLastDocumentJournal()
+    {
+        return GetLastDocumentJournal(_mHandle);
+    }
+
+    private static void InitializeDriver(string path)
+    {
+        try
+        {
+            GetVersionString();
+            return;
+        }
+        catch (Exception ex)
+        {
+            // ignored
+        }
+
+        path = path ?? string.Empty;
+
+        if (path.Length == 0)
+        {
+            if (LoadDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!))
+                return;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                path = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\ATOL\\Drivers\\10.0\\KKT",
+                    "INSTALL_DIR", null)!;
+
+                path = path != null
+                    ? Path.Combine(path, "bin")
+                    : throw new FileNotFoundException("Driver not installed");
+            }
+        }
+
+        if (LoadDriver(path))
+            return;
+
+        throw new FileNotFoundException("Driver not found");
+    }
+
+    private static bool LoadDriver(string path)
+    {
+        var os = Environment.OSVersion.Platform;
+        try
+        {
+            return os switch
+            {
+                PlatformID.Win32NT => LoadWindowsLibrary(path),
+                PlatformID.Unix => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+                    ? LoadOSXLibrary(path)
+                    : LoadLinuxLibrary(path),
+                _ => throw new PlatformNotSupportedException()
+            };
+        }
+        catch (FileNotFoundException e)
+        {
+            //TODO: добавить лог ошибок
+            return false;
+        }
+    }
+
+    private static string GetLibraryPath(string path, OSPlatform os)
+    {
+        var libraryNames = new Dictionary<OSPlatform, string>
+        {
+            { OSPlatform.Windows, "fptr10.dll" },
+            { OSPlatform.Linux, "libfptr10.so" },
+            { OSPlatform.OSX, "libfptr10.dylib" }
+        };
+
+        if (path.Length == 0)
+            path = libraryNames[os];
+        else if ((File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory)
+            path = Path.Combine(path, libraryNames[os]);
+
+        return path;
+    }
+
+    private static bool LoadWindowsLibrary(string path)
+    {
+        var libraryPath = GetLibraryPath(path, OSPlatform.Windows);
+
+        var loadResult = LoadLibrary(libraryPath);
+
+        if (loadResult != IntPtr.Zero)
+            return loadResult != IntPtr.Zero;
+
+        LoadLibrary(Path.Combine(Path.GetDirectoryName(path), "msvcp140.dll"));
+        loadResult = LoadLibrary(libraryPath);
+
+        return loadResult != IntPtr.Zero;
+    }
+
+    private static bool LoadLinuxLibrary(string path)
+    {
+        var libraryPath = GetLibraryPath(path, OSPlatform.Linux);
+
+        var loadResult = LoadLibrary(libraryPath);
+
+        return loadResult != IntPtr.Zero;
+    }
+
+    private static bool LoadOSXLibrary(string path)
+    {
+        var libraryPath = GetLibraryPath(path, OSPlatform.OSX);
+
+        var loadResult = LoadLibrary(libraryPath);
+
+        return loadResult != IntPtr.Zero;
+    }
+
+    private byte[] GetBytes(string input)
+    {
+        return _encoding.GetBytes(input);
+    }
+
+    private string GetString(byte[] input)
+    {
+        return _encoding.GetString(input);
+    }
+
+    private Encoding GetDefaultEncoding()
+    {
+        return Environment.OSVersion.Platform switch
+        {
+            PlatformID.Win32NT => Encoding.Unicode,
+            PlatformID.Unix => Encoding.UTF32,
+            _ => throw new PlatformNotSupportedException()
+        };
+    }
+
+    private int GetOsSymbolSize()
+    {
+        return Environment.OSVersion.Platform switch
+        {
+            PlatformID.Win32NT => 2,
+            PlatformID.Unix => 4,
+            _ => throw new PlatformNotSupportedException()
+        };
     }
 
     #region DLL Imports
@@ -652,692 +1647,4 @@ public class KktDriver : IKktDriver, IDisposable
     private static extern int GetLastDocumentJournal(IntPtr handle);
 
     #endregion
-
-    private static void InitializeDriver(string path)
-    {
-        try
-        {
-            GetVersionString();
-            return;
-        }
-        catch (Exception ex)
-        {
-            // ignored
-        }
-
-        path = path ?? string.Empty;
-
-        if (path.Length == 0)
-        {
-            if (LoadDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!))
-                return;
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                path = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\ATOL\\Drivers\\10.0\\KKT",
-                    "INSTALL_DIR", null)!;
-                
-                path = path != null ? Path.Combine(path, "bin") : throw new FileNotFoundException("Driver not installed");
-            }
-        }
-        
-        if (LoadDriver(path))
-            return;
-        
-        throw new FileNotFoundException("Driver not found");
-    }
-    
-    public void Destroy()
-    {
-        if (!(_mHandle == IntPtr.Zero))
-            return;
-        
-        Destroy(out _mHandle);
-    }
-
-    public string Version() => Marshal.PtrToStringAnsi(GetVersionString())!;
-
-    public int LogWrite(string tag, int level, string message)
-    => LogWriteEx(_mHandle, GetBytes(tag), level, GetBytes(message));
-
-    public int ChangeLabel(string label)
-    {
-        throw new NotImplementedException();
-    }
-
-    public int ShowProperties(int parentType, IntPtr parent) => ShowProperties(_mHandle, parentType, parent);
-
-    public bool IsOpened() => IsOpened(_mHandle);
-
-    public int ErrorCode() => ErrorCode(_mHandle);
-
-    public string ErrorDescription()
-    {
-        var bufferSize = 128;
-        var buffer = new byte[_symbolSize * bufferSize];
-        
-        var result = ErrorDescription(_mHandle, buffer, bufferSize);
-
-        if (result > bufferSize)
-        {
-            bufferSize = result;
-            buffer = new byte[_symbolSize * result];
-            ErrorDescription(_mHandle, buffer, bufferSize);
-        }
-        
-        return GetString(buffer);
-    }
-
-    public void ResetError() => ResetError(_mHandle);
-
-    public int SetSettings(string settings) => SetSettings(_mHandle, GetBytes(settings));
-
-    public string GetSettings()
-    {
-        var bufferSize = 128;
-        var buffer = new byte[_symbolSize * bufferSize];
-        
-        var settings = GetSettings(_mHandle, buffer, bufferSize);
-        
-        if (settings > bufferSize)
-        {
-            bufferSize = settings;
-            buffer = new byte[_symbolSize * settings];
-            GetSettings(_mHandle, buffer, bufferSize);
-        }
-
-        return _encoding.GetString(buffer, 0, settings * _symbolSize).TrimEnd(new char[1]);
-    }
-
-    public void SetSingleSetting(string key, string setting)
-        => SetSingleSetting(_mHandle, _encoding.GetBytes(key), _encoding.GetBytes(setting));
-
-    public string GetSingleSetting(string key)
-    {
-        var bufferSize = 128;
-        var buffer = new byte[_symbolSize * bufferSize];
-        var singleSetting = GetSingleSetting(_mHandle, _encoding.GetBytes(key), buffer, bufferSize);
-        
-        if (singleSetting > bufferSize)
-        {
-            bufferSize = singleSetting;
-            buffer = new byte[_symbolSize * singleSetting];
-            GetSingleSetting(_mHandle, _encoding.GetBytes(key), buffer, bufferSize);
-        }
-        
-        return _encoding.GetString(buffer, 0, singleSetting * _symbolSize).TrimEnd(new char[1]);
-    }
-
-    public void SetParam(int paramId, uint value)
-        => SetParamInt(_mHandle, paramId, value);
-
-    public void SetParam(int paramId, bool value)
-        => SetParamBool(_mHandle, paramId, value);
-
-    public void SetParam(int paramId, double value)
-        => SetParamDouble(_mHandle, paramId, value);
-
-    public void SetParam(int paramId, byte[] value)
-        => SetParamByteArray(_mHandle, paramId, value, value.Length);
-
-    public void SetParam(int paramId, DateTime value)
-        => SetParamDateTime(_mHandle, paramId, value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
-
-    public void SetParam(int paramId, string value)
-        => SetParamString(_mHandle, paramId, GetBytes(value));
-
-    public void SetNonPrintableParam(int paramId, uint value)
-        => SetNonPrintableParamInt(_mHandle, paramId, value);
-
-    public void SetNonPrintableParam(int paramId, bool value)
-        => SetNonPrintableParamBool(_mHandle, paramId, value);
-
-    public void SetNonPrintableParam(int paramId, double value)
-        => SetNonPrintableParamDouble(_mHandle, paramId, value);
-
-    public void SetNonPrintableParam(int paramId, byte[] value)
-        => SetNonPrintableParamByteArray(_mHandle, paramId, value, value.Length);
-
-    public void SetNonPrintableParam(int paramId, DateTime value)
-        => SetNonPrintableParamDateTime(_mHandle, paramId, value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
-
-    public void SetNonPrintableParam(int paramId, string value)
-        => SetNonPrintableParamString(_mHandle, paramId, GetBytes(value));
-
-    public void SetUserParam(int paramId, uint value)
-        => SetUserParamInt(_mHandle, paramId, value);
-
-    public void SetUserParam(int paramId, bool value)
-        => SetUserParamBool(_mHandle, paramId, value);
-
-    public void SetUserParam(int paramId, double value)
-        => SetUserParamDouble(_mHandle, paramId, value);
-
-    public void SetUserParam(int paramId, byte[] value)
-        => SetUserParamByteArray(_mHandle, paramId, value, value.Length);
-
-    public void SetUserParam(int paramId, DateTime value)
-        => SetUserParamDateTime(_mHandle, paramId, value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
-    
-    public void SetUserParam(int paramId, string value)
-        => SetUserParamString(_mHandle, paramId, GetBytes(value));
-
-    public uint GetParamInt(int paramId)
-        => GetParamInt(_mHandle, paramId);
-
-    public bool GetParamBool(int paramId)
-        => GetParamBool(_mHandle, paramId);
-
-    public double GetParamDouble(int paramId)
-        => GetParamDouble(_mHandle, paramId);
-
-    public byte[] GetParamByteArray(int paramId)
-    {
-        var bufferSize = 128;
-        var buffer = new byte[bufferSize];
-        var paramByteArray = GetParamByteArray(_mHandle, paramId, buffer, bufferSize);
-        
-        if (paramByteArray > bufferSize)
-        {
-            bufferSize = paramByteArray;
-            buffer = new byte[bufferSize];
-            GetParamByteArray(_mHandle, paramId, buffer, bufferSize);
-        }
-        
-        return buffer;
-    }
-
-    public DateTime GetParamDateTime(int paramId)
-    {
-        GetParamDateTime(
-            _mHandle, 
-            paramId, 
-            out var year, 
-            out var month, 
-            out var day, 
-            out var hour, 
-            out var minute, 
-            out var second);
-        
-        return new DateTime(year.ToInt32(), month.ToInt32(), day.ToInt32(), hour.ToInt32(), minute.ToInt32(), second.ToInt32());
-    }
-
-    public string GetParamString(int paramId)
-    {
-        var bufferSize = 128;
-        var buffer = new byte[_symbolSize * bufferSize];
-        var paramString = GetParamString(_mHandle, paramId, buffer, bufferSize);
-        
-        if (paramString > bufferSize)
-        {
-            bufferSize = paramString;
-            buffer = new byte[_symbolSize * paramString];
-            GetParamString(_mHandle, paramId, buffer, bufferSize);
-        }
-        
-        return _encoding.GetString(buffer, 0, paramString * _symbolSize).TrimEnd(new char[1]);
-    }  
-
-    public int ApplySingleSettings()
-        => ApplySingleSettings(_mHandle);
-
-    public int Open()
-        => Open(_mHandle);
-
-    public int Close()
-        => Close(_mHandle);
-
-    public int ResetParams()
-        => ResetParams(_mHandle);
-
-    public int RunCommand()
-        => RunCommand(_mHandle);
-
-    public int Beep()
-        => Beep(_mHandle);
-
-    public int OpenDrawer()
-        => OpenDrawer(_mHandle);
-
-    public int Cut()
-        => Cut(_mHandle);
-
-    public int DevicePoweroff()
-        => DevicePoweroff(_mHandle);
-
-    public int DeviceReboot()
-        => DeviceReboot(_mHandle);
-
-    public int OpenShift()
-        => OpenShift(_mHandle);
-
-    public int ResetSummary()
-        => ResetSummary(_mHandle);
-
-    public int InitDevice()
-        => InitDevice(_mHandle);
-
-    public int QueryData()
-        => QueryData(_mHandle);
-
-    public int CashIncome()
-        => CashIncome(_mHandle);
-
-    public int CashOutcome()
-        => CashOutcome(_mHandle);
-
-    public int OpenReceipt()
-        => OpenReceipt(_mHandle);
-
-    public int CancelReceipt()
-        => CancelReceipt(_mHandle);
-
-    public int CloseReceipt()
-        => CloseReceipt(_mHandle);
-
-    public int CheckDocumentClosed()
-        => CheckDocumentClosed(_mHandle);
-
-    public int ReceiptTotal()
-        => ReceiptTotal(_mHandle);
-
-    public int ReceiptTax()
-        => ReceiptTax(_mHandle);
-
-    public int Registration()
-        => Registration(_mHandle);
-
-    public int Payment()
-        => Payment(_mHandle);
-
-    public int Report()
-        => Report(_mHandle);
-
-    public int PrintText()
-        => PrintText(_mHandle);
-
-    public int PrintCliche()
-        => PrintCliche(_mHandle);
-
-    public int BeginNonfiscalDocument()
-        => BeginNonfiscalDocument(_mHandle);
-
-    public int EndNonfiscalDocument()
-        => EndNonfiscalDocument(_mHandle);
-
-    public int PrintBarcode()
-        => PrintBarcode(_mHandle);
-
-    public int PrintPicture()
-        => PrintPicture(_mHandle);
-
-    public int PrintPictureByNumber()
-        => PrintPictureByNumber(_mHandle);
-
-    public int UploadPictureFromFile()
-        => UploadPictureFromFile(_mHandle);
-
-    public int ClearPictures()
-        => ClearPictures(_mHandle);
-
-    public int WriteDeviceSettingRaw()
-        => WriteDeviceSettingRaw(_mHandle);
-
-    public int ReadDeviceSettingRaw()
-        => ReadDeviceSettingRaw(_mHandle);
-
-    public int CommitSettings()
-        => CommitSettings(_mHandle);
-
-    public int InitSettings()
-        => InitSettings(_mHandle);
-
-    public int ResetSettings()
-        => ResetSettings(_mHandle);
-
-    public int WriteDateTime()
-        => WriteDateTime(_mHandle);
-
-    public int WriteLicense()
-        => WriteLicense(_mHandle);
-
-    public int FnOperation()
-        => FnOperation(_mHandle);
-
-    public int FnQueryData()
-        => FnQueryData(_mHandle);
-
-    public int FnWriteAttributes()
-        => FnWriteAttributes(_mHandle);
-
-    public int ExternalDevicePowerOn()
-        => ExternalDevicePowerOn(_mHandle);
-
-    public int ExternalDevicePowerOff()
-        => ExternalDevicePowerOff(_mHandle);
-
-    public int ExternalDeviceWriteData()
-        => ExternalDeviceWriteData(_mHandle);
-
-    public int ExternalDeviceReadData()
-        => ExternalDeviceReadData(_mHandle);
-
-    public int OperatorLogin()
-        => OperatorLogin(_mHandle);
-
-    public int ProcessJson()
-        => ProcessJson(_mHandle);
-
-    public int ReadDeviceSetting()
-        => ReadDeviceSetting(_mHandle);
-
-    public int WriteDeviceSetting()
-        => WriteDeviceSetting(_mHandle);
-
-    public int BeginReadRecords()
-        => BeginReadRecords(_mHandle);
-
-    public int ReadNextRecord()
-        => ReadNextRecord(_mHandle);
-
-    public int EndReadRecords()
-        => EndReadRecords(_mHandle);
-
-    public int UserMemoryOperation()
-        => UserMemoryOperation(_mHandle);
-
-    public int ContinuePrint()
-        => ContinuePrint(_mHandle);
-
-    public int InitMgm()
-        => InitMgm(_mHandle);
-
-    public int UtilFormTlv()
-        => UtilFormTlv(_mHandle);
-
-    public int UtilFormNomenclature()
-        => UtilFormNomenclature(_mHandle);
-
-    public int UtilMapping()
-        => UtilMapping(_mHandle);
-
-    public int ReadModelFlags()
-        => ReadModelFlags(_mHandle);
-
-    public int LineFeed()
-        => LineFeed(_mHandle);
-
-    public int FlashFirmware()
-        => FlashFirmware(_mHandle);
-
-    public int SoftLockInit()
-        => SoftLockInit(_mHandle);
-
-    public int SoftLockQuerySessionCode()
-        => SoftLockQuerySessionCode(_mHandle);
-
-    public int SoftLockValidate()
-        => SoftLockValidate(_mHandle);
-
-    public int UtilCalcTax()
-        => UtilCalcTax(_mHandle);
-
-    public int DownloadPicture()
-        => DownloadPicture(_mHandle);
-
-    public int BluetoothRemovePairedDevices()
-        => BluetoothRemovePairedDevices(_mHandle);
-
-    public int UtilTagInfo()
-        => UtilTagInfo(_mHandle);
-
-    public int UtilContainerVersions()
-        => UtilContainerVersions(_mHandle);
-
-    public int ActivateLicenses()
-        => ActivateLicenses(_mHandle);
-
-    public int RemoveLicenses()
-        => RemoveLicenses(_mHandle);
-
-    public int EnterKeys()
-        => EnterKeys(_mHandle);
-
-    public int ValidateKeys()
-        => ValidateKeys(_mHandle);
-
-    public int EnterSerialNumber()
-        => EnterSerialNumber(_mHandle);
-
-    public int GetSerialNumberRequest()
-        => GetSerialNumberRequest(_mHandle);
-
-    public int UploadPixelBuffer()
-        => UploadPixelBuffer(_mHandle);
-
-    public int DownloadPixelBuffer()
-        => DownloadPixelBuffer(_mHandle);
-
-    public int PrintPixelBuffer()
-        => PrintPixelBuffer(_mHandle);
-
-    public int UtilConvertTagValue()
-        => UtilConvertTagValue(_mHandle);
-
-    public int ParseMarkingCode()
-        => ParseMarkingCode(_mHandle);
-
-    public int CallScript()
-        => CallScript(_mHandle);
-
-    public int SetHeaderLines()
-        => SetHeaderLines(_mHandle);
-
-    public int SetFooterLines()
-        => SetFooterLines(_mHandle);
-
-    public int UploadPictureCliche()
-        => UploadPictureCliche(_mHandle);
-
-    public int UploadPictureMemory()
-        => UploadPictureMemory(_mHandle);
-
-    public int UploadPixelBufferCliche()
-        => UploadPixelBufferCliche(_mHandle);
-
-    public int UploadPixelBufferMemory()
-        => UploadPixelBufferMemory(_mHandle);
-
-    public int ExecDriverScript()
-        => ExecDriverScript(_mHandle);
-
-    public int UploadDriverScript()
-        => UploadDriverScript(_mHandle);
-
-    public int ExecDriverScriptById()
-        => ExecDriverScriptById(_mHandle);
-
-    public int WriteUniversalCountersSettings()
-        => WriteUniversalCountersSettings(_mHandle);
-
-    public int ReadUniversalCountersSettings()
-        => ReadUniversalCountersSettings(_mHandle);
-
-    public int QueryUniversalCountersState()
-        => QueryUniversalCountersState(_mHandle);
-
-    public int ResetUniversalCounters()
-        => ResetUniversalCounters(_mHandle);
-
-    public int CacheUniversalCounters()
-        => CacheUniversalCounters(_mHandle);
-
-    public int ReadUniversalCounterSum()
-        => ReadUniversalCounterSum(_mHandle);
-
-    public int ReadUniversalCounterQuantity()
-        => ReadUniversalCounterQuantity(_mHandle);
-
-    public int ClearUniversalCountersCache()
-        => ClearUniversalCountersCache(_mHandle);
-
-    public int DisableOfdChannel()
-        => DisableOfdChannel(_mHandle);
-
-    public int EnableOfdChannel()
-        => EnableOfdChannel(_mHandle);
-
-    public int ValidateJson()
-        => ValidateJson(_mHandle);
-
-    public int ReflectionCall()
-        => ReflectionCall(_mHandle);
-
-    public int GetRemoteServerInfo()
-        => GetRemoteServerInfo(_mHandle);
-
-    public int BeginMarkingCodeValidation()
-        => BeginMarkingCodeValidation(_mHandle);
-
-    public int CancelMarkingCodeValidation()
-        => CancelMarkingCodeValidation(_mHandle);
-
-    public int GetMarkingCodeValidationStatus()
-        => GetMarkingCodeValidationStatus(_mHandle);
-
-    public int AcceptMarkingCode()
-        => AcceptMarkingCode(_mHandle);
-
-    public int DeclineMarkingCode()
-        => DeclineMarkingCode(_mHandle);
-
-    public int UpdateFnmKeys()
-        => UpdateFnmKeys(_mHandle);
-
-    public int WriteSalesNotice()
-        => WriteSalesNotice(_mHandle);
-
-    public int CheckMarkingCodeValidationsReady()
-        => CheckMarkingCodeValidationsReady(_mHandle);
-
-    public int ClearMarkingCodeValidationResult()
-        => ClearMarkingCodeValidationResult(_mHandle);
-
-    public int PingMarkingServer()
-        => PingMarkingServer(_mHandle);
-
-    public int GetMarkingServerStatus()
-        => GetMarkingServerStatus(_mHandle);
-
-    public int IsDriverLocked()
-        => IsDriverLocked(_mHandle);
-
-    public int GetLastDocumentJournal()
-        => GetLastDocumentJournal(_mHandle);
-
-    private static bool LoadDriver(string path)
-    {
-        var os = Environment.OSVersion.Platform;
-        try
-        {
-            return os switch
-            {
-                PlatformID.Win32NT => LoadWindowsLibrary(path),
-                PlatformID.Unix => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) 
-                    ? LoadOSXLibrary(path) 
-                    : LoadLinuxLibrary(path),
-                _ => throw new PlatformNotSupportedException()
-            };
-        }
-        catch (FileNotFoundException e)
-        {
-            //TODO: добавить лог ошибок
-            return false;
-        }
-    }
-
-    private static string GetLibraryPath(string path, OSPlatform os)
-    {
-        var libraryNames = new Dictionary<OSPlatform, string>()
-        {
-            { OSPlatform.Windows, "fptr10.dll" },
-            { OSPlatform.Linux, "libfptr10.so" },
-            { OSPlatform.OSX, "libfptr10.dylib" }
-        };
-
-        if (path.Length == 0)
-            path = libraryNames[os];
-        else if ((File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory)
-            path = Path.Combine(path, libraryNames[os]);
-
-        return path;
-    }
-    
-    private static bool LoadWindowsLibrary(string path)
-    {
-        var libraryPath = GetLibraryPath(path, OSPlatform.Windows);
-
-        var loadResult = LoadLibrary(libraryPath);
-
-        if (loadResult != IntPtr.Zero) 
-            return loadResult != IntPtr.Zero;
-                    
-        LoadLibrary(Path.Combine(Path.GetDirectoryName(path), "msvcp140.dll"));
-        loadResult = LoadLibrary(libraryPath);
-
-        return loadResult != IntPtr.Zero;
-    }
-    
-    private static bool LoadLinuxLibrary(string path)
-    {
-        var libraryPath = GetLibraryPath(path, OSPlatform.Linux);
-
-        var loadResult = LoadLibrary(libraryPath);
-
-        return loadResult != IntPtr.Zero;
-    }
-    
-    private static bool LoadOSXLibrary(string path)
-    {
-        var libraryPath = GetLibraryPath(path, OSPlatform.OSX);
-
-        var loadResult = LoadLibrary(libraryPath);
-
-        return loadResult != IntPtr.Zero;
-    }
-    
-    private byte[] GetBytes(string input)
-    {
-        return _encoding.GetBytes(input);
-    }
-    
-    private string GetString(byte[] input)
-    {
-        return _encoding.GetString(input);
-    }
-
-    private Encoding GetDefaultEncoding()
-    {
-        return Environment.OSVersion.Platform switch
-        {
-            PlatformID.Win32NT => Encoding.Unicode,
-            PlatformID.Unix => Encoding.UTF32,
-            _ => throw new PlatformNotSupportedException()
-        };
-    }
-
-    private int GetOsSymbolSize()
-    {
-        return Environment.OSVersion.Platform switch
-        {
-            PlatformID.Win32NT => 2,
-            PlatformID.Unix => 4,
-            _ => throw new PlatformNotSupportedException()
-        };
-    }
-
-    public void Dispose()
-    {
-        Destroy();
-    }
 }

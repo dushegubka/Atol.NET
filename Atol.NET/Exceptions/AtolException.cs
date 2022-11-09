@@ -6,5 +6,6 @@ public class AtolException : Exception
     {
         ErrorCode = errorCode;
     }
-    public int ErrorCode { get;}
+
+    public int ErrorCode { get; }
 }

@@ -1,8 +1,9 @@
 // ReSharper disable InconsistentNaming
+
 namespace Atol.NET;
 
 public static class Constants
-  {
+{
     public const int LIBFPTR_PARAM_TEXT = 65536;
     public const int LIBFPTR_PARAM_TEXT_WRAP = 65537;
     public const int LIBFPTR_PARAM_ALIGNMENT = 65538;
@@ -1160,4 +1161,4 @@ public static class Constants
     public const int LIBFPTR_ERROR_USERS_SCRIPTS_BASE = 1000;
     public const int LIBFPTR_ERROR_USERS_SCRIPTS_END = 1999;
     public const int LIBFPTR_ERROR_RPC_END = 699;
-  }
+}

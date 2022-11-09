@@ -7,6 +7,6 @@ public class ParamBaseAttribute : Attribute
     {
         ReturningType = returningType;
     }
-    
+
     public Type ReturningType { get; }
 }

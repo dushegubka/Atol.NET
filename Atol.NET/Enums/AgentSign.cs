@@ -4,42 +4,42 @@ namespace Atol.NET.Enums;
 public enum AgentSign
 {
     /// <summary>
-    /// Признак агента отсутствует
+    ///     Признак агента отсутствует
     /// </summary>
     None = 0,
-    
+
     /// <summary>
-    /// Банковский платежный агент
+    ///     Банковский платежный агент
     /// </summary>
     BankPayingAgent = 1,
-    
+
     /// <summary>
-    /// Банковский платежный субагент
+    ///     Банковский платежный субагент
     /// </summary>
     BankPayingSubagent = 2,
-    
+
     /// <summary>
-    /// Платежный агент
+    ///     Платежный агент
     /// </summary>
     PayingAgent = 4,
-    
+
     /// <summary>
-    /// Платежный субагент
+    ///     Платежный субагент
     /// </summary>
     PayingSubagent = 8,
-    
+
     /// <summary>
-    /// Поверенный
+    ///     Поверенный
     /// </summary>
     Attorney = 16,
-    
+
     /// <summary>
-    /// Комиссионер
+    ///     Комиссионер
     /// </summary>
     CommissionAgent = 32,
-    
+
     /// <summary>
-    /// Другой тип агента, "иной" агент
+    ///     Другой тип агента, "иной" агент
     /// </summary>
     Another = 64
 }

@@ -3,5 +3,5 @@
 public enum RegistrationType
 {
     Registration,
-    ReRegistration,
+    ReRegistration
 }

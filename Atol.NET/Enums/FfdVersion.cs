@@ -1,4 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
+
 namespace Atol.NET.Enums;
 
 public enum FfdVersion
