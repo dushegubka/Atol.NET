@@ -25,7 +25,7 @@ public class DefaultViewSerializer : IAtolViewSerializer
 
         foreach (var property in properties)
         {
-            var attribute = property.GetCustomAttribute(typeof(ConstantAttribute)) as ConstantAttribute
+            var attribute = property.GetCustomAttribute(typeof(ParameterIdAttribute)) as ParameterIdAttribute
                             ?? throw new InvalidOperationException("Property is null");
 
             var provider = property.PropertyType.IsEnum

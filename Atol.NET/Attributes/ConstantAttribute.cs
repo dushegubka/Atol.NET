@@ -2,9 +2,9 @@
 
 namespace Atol.NET.Attributes;
 
-public class ConstantAttribute : ParamBaseAttribute
+public class ParameterIdAttribute : ParamBaseAttribute
 {
-    public ConstantAttribute(Parameter constant, Type returningType) : base(returningType)
+    public ParameterIdAttribute(Parameter constant, Type returningType) : base(returningType)
     {
         Constant = (int) constant;
     }

@@ -14,18 +14,18 @@ public class IsmExchangeStatusInfo
     /// <summary>
     ///     Количество непереданных документов
     /// </summary>
-    [Constant(Parameter.DocumentsCount, typeof(int))]
+    [ParameterId(Parameter.DocumentsCount, typeof(int))]
     public int DocumentsCount { get; set; }
 
     /// <summary>
     ///     Номер первого непереданного уведомления
     /// </summary>
-    [Constant(Parameter.DocumentNumber, typeof(int))]
+    [ParameterId(Parameter.DocumentNumber, typeof(int))]
     public int DocumentNumber { get; set; }
 
     /// <summary>
     ///     Дата и время первого непереданного уведомления
     /// </summary>
-    [Constant(Parameter.DateTime, typeof(DateTime))]
+    [ParameterId(Parameter.DateTime, typeof(DateTime))]
     public DateTime Date { get; set; }
 }
