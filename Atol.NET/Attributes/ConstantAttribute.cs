@@ -1,10 +1,12 @@
-﻿namespace Atol.NET.Attributes;
+﻿using Atol.NET.Enums;
+
+namespace Atol.NET.Attributes;
 
 public class ConstantAttribute : ParamBaseAttribute
 {
-    public ConstantAttribute(int constant, Type returningType) : base(returningType)
+    public ConstantAttribute(Parameter constant, Type returningType) : base(returningType)
     {
-        Constant = constant;
+        Constant = (int) constant;
     }
 
     public int Constant { get; }
