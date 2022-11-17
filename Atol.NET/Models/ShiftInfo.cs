@@ -1,4 +1,5 @@
 ﻿using Atol.NET.Attributes;
+using Atol.NET.Enums;
 
 namespace Atol.NET.Models;
 
@@ -7,12 +8,12 @@ public class ShiftInfo
     /// <summary>
     ///     Количество чеков за смену
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_RECEIPT_NUMBER, typeof(int))]
+    [Constant(Parameter.ReceiptNumber, typeof(int))]
     public int ReceiptNumber { get; set; }
 
     /// <summary>
     ///     Номер смены
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_SHIFT_NUMBER, typeof(int))]
+    [Constant(Parameter.ShiftNumber, typeof(int))]
     public int ShiftNumber { get; set; }
 }

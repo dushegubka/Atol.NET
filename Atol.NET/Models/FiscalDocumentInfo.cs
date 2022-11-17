@@ -8,30 +8,30 @@ public class FiscalDocumentInfo
     /// <summary>
     ///     Тип документа
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_FN_DOCUMENT_TYPE, typeof(FiscalDocumentType))]
+    [Constant(Parameter.FnDocumentType, typeof(FiscalDocumentType))]
     public FiscalDocumentType DocumentType { get; set; }
 
     /// <summary>
     ///     Дата и время документа
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_DATE_TIME, typeof(DateTime))]
+    [Constant(Parameter.DateTime, typeof(DateTime))]
     public DateTime DateTime { get; set; }
 
     /// <summary>
     ///     Номер ФД
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, typeof(int))]
+    [Constant(Parameter.DocumentNumber, typeof(int))]
     public int DocumentNumber { get; set; }
 
     /// <summary>
     ///     Флаг наличия подтверждения ОФД
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_HAS_OFD_TICKET, typeof(bool))]
+    [Constant(Parameter.HasOfdTicket, typeof(bool))]
     public bool HasOfdTicket { get; set; }
 
     /// <summary>
     ///     Фискальный признак
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_FISCAL_SIGN, typeof(string))]
+    [Constant(Parameter.FiscalSign, typeof(string))]
     public string? FiscalFign { get; set; }
 }

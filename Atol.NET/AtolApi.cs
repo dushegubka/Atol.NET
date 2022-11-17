@@ -3,6 +3,7 @@ using Atol.NET.Abstractions.Categories;
 using Atol.NET.Abstractions.Connectors;
 using Atol.NET.Categories;
 using Atol.NET.DataProviders;
+using Atol.NET.Enums;
 using Atol.NET.Models;
 using Atol.NET.Models.Connectors;
 using Atol.NET.Models.Responses;
@@ -46,7 +47,7 @@ public class AtolApi : IAtolApi
     /// <inheritdoc />
     public KktResponse<KktGeneralInfo> GetGeneralInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_STATUS);
+        _kkt.SetParam(Parameter.DataType, DataType.Status);
         _kkt.QueryData();
 
         var result = _requestService.GetData<KktGeneralInfo>();
@@ -57,8 +58,8 @@ public class AtolApi : IAtolApi
     /// <inheritdoc />
     public KktResponse<KktLicenseState> GetLicenseState(int licenseId)
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_DATA_TYPE, Constants.LIBFPTR_DT_LICENSE_ACTIVATED);
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_LICENSE_NUMBER, licenseId);
+        _kkt.SetParam(Parameter.DataType, DataType.LicenseActivated);
+        _kkt.SetParam(Parameter.LicenseNumber, licenseId);
         _kkt.QueryData();
 
         return _requestService.GetData<KktLicenseState>();
@@ -75,7 +76,7 @@ public class AtolApi : IAtolApi
     {
         var result = _requestService.SendRequest(() =>
         {
-            _kkt.SetParam(Constants.LIBFPTR_PARAM_PRINT_REPORT, false);
+            _kkt.SetParam(Parameter.PrintReport, false);
             _kkt.DeviceReboot();
         });
 
@@ -93,8 +94,8 @@ public class AtolApi : IAtolApi
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.SetParam(Constants.LIBFPTR_PARAM_FREQUENCY, frequency);
-            _kkt.SetParam(Constants.LIBFPTR_PARAM_DURATION, duration);
+            _kkt.SetParam(Parameter.Frequency, frequency);
+            _kkt.SetParam(Parameter.Duration, duration);
             _kkt.Beep();
         });
     }
@@ -104,7 +105,7 @@ public class AtolApi : IAtolApi
     {
         return _requestService.SendRequest(() =>
         {
-            _kkt.SetParam(Constants.LIBFPTR_PARAM_DATE_TIME, dateTime);
+            _kkt.SetParam(Parameter.DateTime, dateTime);
             _kkt.WriteDateTime();
         });
     }

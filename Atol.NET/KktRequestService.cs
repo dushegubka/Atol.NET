@@ -115,6 +115,41 @@ public class KktRequestService : IKktRequestService
         }
     }
 
+    public KktResponse<T> GetDataByConstant<T>(Enum constant)
+    {
+        try
+        {
+            var response = _serializer.GetValueByConstant<T>(Convert.ToInt32(constant));
+
+            return new KktResponse<T>
+            {
+                Data = response,
+                IsSuccess = true,
+                Error = new KktResponseError
+                {
+                    Code = 0,
+                    Description = string.Empty
+                }
+            };
+        }
+        catch (AtolException e)
+        {
+            return new KktResponse<T>
+            {
+                IsSuccess = false,
+                Error = new KktResponseError
+                {
+                    Code = e.ErrorCode,
+                    Description = e.Message
+                }
+            };
+        }
+        finally
+        {
+            _kkt.ResetParams();
+        }
+    }
+
     private void CheckAndThrowIfError()
     {
         var result = _kkt.ErrorCode();

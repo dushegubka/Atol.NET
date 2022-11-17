@@ -40,6 +40,8 @@ public interface IKktDriver
 
     void SetParam(int paramId, string value);
 
+    void SetParam<TParam, TValue>(TParam paramId, TValue value) where TParam : Enum;
+
     void SetNonPrintableParam(int paramId, uint value);
 
     void SetNonPrintableParam(int paramId, bool value);

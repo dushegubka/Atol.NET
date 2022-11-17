@@ -5,18 +5,18 @@ namespace Atol.NET.Models;
 
 public class LastReceiptInfo
 {
-    [Constant(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, typeof(int))]
+    [Constant(Parameter.DocumentNumber, typeof(int))]
     public int DocumentNumber { get; set; }
 
-    [Constant(Constants.LIBFPTR_PARAM_RECEIPT_TYPE, typeof(int))]
+    [Constant(Parameter.ReceiptType, typeof(int))]
     public ReceiptType ReceiptType { get; set; }
 
-    [Constant(Constants.LIBFPTR_PARAM_RECEIPT_SUM, typeof(double))]
+    [Constant(Parameter.ReceiptSum, typeof(double))]
     public double Sum { get; set; }
 
-    [Constant(Constants.LIBFPTR_PARAM_FISCAL_SIGN, typeof(string))]
+    [Constant(Parameter.FiscalSign, typeof(string))]
     public string? FiscalSign { get; set; }
 
-    [Constant(Constants.LIBFPTR_PARAM_DATE_TIME, typeof(DateTime))]
+    [Constant(Parameter.DateTime, typeof(DateTime))]
     public DateTime DateTime { get; set; }
 }

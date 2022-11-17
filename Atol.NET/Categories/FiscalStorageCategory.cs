@@ -1,5 +1,6 @@
 ﻿using Atol.NET.Abstractions;
 using Atol.NET.Abstractions.Categories;
+using Atol.NET.Enums;
 using Atol.NET.Models;
 using Atol.NET.Models.Responses;
 
@@ -21,7 +22,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<FiscalStorageInfo> GetFiscalStorageInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_FN_INFO);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.FnInfo);
         _kkt.FnQueryData();
 
         return _requestService.GetData<FiscalStorageInfo>();
@@ -30,7 +31,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<LastReceiptInfo> GetLastReceiptInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_LAST_RECEIPT);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.LastReceipt);
         _kkt.FnQueryData();
 
         return _requestService.GetData<LastReceiptInfo>();
@@ -39,7 +40,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<LastDocumentInfo> GetLastDocumentInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_LAST_DOCUMENT);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.LastDocument);
         _kkt.FnQueryData();
 
         return _requestService.GetData<LastDocumentInfo>();
@@ -48,7 +49,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<ShiftInfo> GetShiftInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_SHIFT);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.Shift);
         _kkt.FnQueryData();
 
         return _requestService.GetData<ShiftInfo>();
@@ -57,16 +58,16 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<uint> GetFiscalDocumentsCount()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_DOCUMENTS_COUNT_IN_SHIFT);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.DocumentsCountInShift);
         _kkt.FnQueryData();
 
-        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_DOCUMENTS_COUNT);
+        return _requestService.GetDataByConstant<uint>(Parameter.DocumentsCount);
     }
 
     /// <inheritdoc />
     public KktResponse<FfdVersionsInfo> GetFfdVersionsInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_FFD_VERSIONS);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.FfdVersions);
         _kkt.FnQueryData();
 
         return _requestService.GetData<FfdVersionsInfo>();
@@ -75,7 +76,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<FnValidityInfo> GetFnValidityInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_VALIDITY);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.Validity);
         _kkt.FnQueryData();
 
         return _requestService.GetData<FnValidityInfo>();
@@ -84,17 +85,17 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<uint> GetFnRemainingDays(DateTime date)
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_VALIDITY_DAYS);
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_DATE_TIME, date);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.ValidityDays);
+        _kkt.SetParam(Parameter.DataType, date);
         _kkt.FnQueryData();
 
-        return _requestService.GetDataByConstant<uint>(Constants.LIBFPTR_PARAM_FN_DAYS_REMAIN);
+        return _requestService.GetDataByConstant<uint>(Parameter.FnDaysRemain);
     }
 
     /// <inheritdoc />
     public KktResponse<OfdError> GetOfdErrors()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_ERRORS);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.Errors);
         _kkt.FnQueryData();
 
         return _requestService.GetData<OfdError>();
@@ -103,8 +104,8 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<OfdReceipt> GetOfdReceipt(int receiptNumber)
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_TICKET_BY_DOC_NUMBER);
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, receiptNumber);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.TicketByDocNumber);
+        _kkt.SetParam(Parameter.DocumentNumber, receiptNumber);
         _kkt.FnQueryData();
 
         return _requestService.GetData<OfdReceipt>();
@@ -113,8 +114,8 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<FiscalDocumentInfo> GetFiscalDocumentInfo(int receiptNumber)
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_DOCUMENT_BY_NUMBER);
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, receiptNumber);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.DocumentByNumber);
+        _kkt.SetParam(Parameter.DocumentNumber, receiptNumber);
         _kkt.FnQueryData();
 
         return _requestService.GetData<FiscalDocumentInfo>();
@@ -123,7 +124,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<IsmExchangeStatusInfo> GetIsmExchangeStatusInfo()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_ISM_EXCHANGE_STATUS);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.IsmExchangeStatus);
         _kkt.FnQueryData();
 
         return _requestService.GetData<IsmExchangeStatusInfo>();
@@ -132,7 +133,7 @@ public class FiscalStorageCategory : IFiscalStorageCategory
     /// <inheritdoc />
     public KktResponse<IsmExchangeError> GetIsmExchangeErrors()
     {
-        _kkt.SetParam(Constants.LIBFPTR_PARAM_FN_DATA_TYPE, Constants.LIBFPTR_FNDT_ISM_ERRORS);
+        _kkt.SetParam(Parameter.FnDataType, FiscalDataType.IsmErrors);
         _kkt.FnQueryData();
 
         return _requestService.GetData<IsmExchangeError>();

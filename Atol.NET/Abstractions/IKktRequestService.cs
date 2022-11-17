@@ -8,4 +8,5 @@ public interface IKktRequestService
     KktResponse<T> GetData<T>();
 
     KktResponse<T> GetDataByConstant<T>(int constant);
+    KktResponse<T> GetDataByConstant<T>(Enum constant);
 }

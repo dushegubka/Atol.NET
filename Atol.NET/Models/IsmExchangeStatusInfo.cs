@@ -1,4 +1,5 @@
 ﻿using Atol.NET.Attributes;
+using Atol.NET.Enums;
 
 namespace Atol.NET.Models;
 
@@ -13,18 +14,18 @@ public class IsmExchangeStatusInfo
     /// <summary>
     ///     Количество непереданных документов
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_DOCUMENTS_COUNT, typeof(int))]
+    [Constant(Parameter.DocumentsCount, typeof(int))]
     public int DocumentsCount { get; set; }
 
     /// <summary>
     ///     Номер первого непереданного уведомления
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, typeof(int))]
+    [Constant(Parameter.DocumentNumber, typeof(int))]
     public int DocumentNumber { get; set; }
 
     /// <summary>
     ///     Дата и время первого непереданного уведомления
     /// </summary>
-    [Constant(Constants.LIBFPTR_PARAM_DATE_TIME, typeof(DateTime))]
+    [Constant(Parameter.DateTime, typeof(DateTime))]
     public DateTime Date { get; set; }
 }

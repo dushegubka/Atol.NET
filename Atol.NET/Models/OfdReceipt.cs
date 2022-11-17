@@ -1,15 +1,16 @@
 ﻿using Atol.NET.Attributes;
+using Atol.NET.Enums;
 
 namespace Atol.NET.Models;
 
 public class OfdReceipt
 {
-    [Constant(Constants.LIBFPTR_PARAM_DATE_TIME, typeof(DateTime))]
+    [Constant(Parameter.DateTime, typeof(DateTime))]
     public DateTime DateTime { get; set; }
 
-    [Constant(Constants.LIBFPTR_PARAM_DOCUMENT_NUMBER, typeof(int))]
+    [Constant(Parameter.DocumentNumber, typeof(int))]
     public int DocumentNumber { get; set; }
 
-    [Constant(Constants.LIBFPTR_PARAM_OFD_FISCAL_SIGN, typeof(byte[]))]
+    [Constant(Parameter.OfdFiscalSign, typeof(byte[]))]
     public byte[] FiscalSign { get; set; }
 }

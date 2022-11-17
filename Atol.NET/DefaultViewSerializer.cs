@@ -21,7 +21,7 @@ public class DefaultViewSerializer : IAtolViewSerializer
     public T? GetView<T>()
     {
         var jsonObject = new JsonObject();
-        var properties = typeof(T)?.GetProperties();
+        var properties = typeof(T).GetProperties();
 
         foreach (var property in properties)
         {
@@ -34,7 +34,7 @@ public class DefaultViewSerializer : IAtolViewSerializer
                   ?? throw new InvalidOperationException("No data provider found for this type");
 
 
-            jsonObject.Add(property.Name, JsonValue.Create(provider.GetData(attribute.Constant)));
+            jsonObject.Add(property.Name, JsonValue.Create(provider?.GetData(attribute.Constant)));
 
             CheckAndThrowIfError();
         }

@@ -204,6 +204,41 @@ public class KktDriver : IKktDriver, IDisposable
         SetParamString(_mHandle, paramId, GetBytes(value));
     }
 
+    public void SetParam<TParam, TValue>(TParam paramId, TValue value) where TParam : Enum
+    {
+        switch (value)
+        {
+            case int intValue:
+                SetParamInt(_mHandle, Convert.ToInt32(paramId), Convert.ToUInt32(value));
+                break;
+            
+            case Enum enumValue:
+                SetParamInt(_mHandle, Convert.ToInt32(paramId), Convert.ToUInt32(value));
+                break;
+
+            case bool boolValue:
+                SetParamBool(_mHandle, Convert.ToInt32(paramId), boolValue);
+                break;
+            
+            case double doubleValue:
+                SetParamDouble(_mHandle, Convert.ToInt32(paramId), doubleValue);
+                break;
+            
+            case byte[] byteArrayValue:
+                SetParamByteArray(_mHandle, Convert.ToInt32(paramId), byteArrayValue, byteArrayValue.Length);
+                break;
+            
+            case DateTime dateTimeValue:
+                SetParamDateTime(_mHandle, Convert.ToInt32(paramId), 
+                    dateTimeValue.Year, dateTimeValue.Month, dateTimeValue.Day, dateTimeValue.Hour, dateTimeValue.Minute, dateTimeValue.Second);
+                break;
+            
+            case string stringValue:
+                SetParamString(_mHandle, Convert.ToInt32(paramId), GetBytes(stringValue));
+                break;
+        }
+    }
+
     public void SetNonPrintableParam(int paramId, uint value)
     {
         SetNonPrintableParamInt(_mHandle, paramId, value);
