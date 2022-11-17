@@ -2,6 +2,7 @@
 
 namespace Atol.NET;
 
+[Obsolete]
 public static class Constants
 {
     public const int LIBFPTR_PARAM_TEXT = 65536;
@@ -371,6 +372,8 @@ public static class Constants
     public const int LIBFPTR_PARAM_PRINT_UPDATE_FNM_KEYS_REPORT = 65900;
     public const int LIBFPTR_PARAM_FN_KEYS_UPDATER_SERVER_URI = 65901;
     public const int LIBFPTR_PARAM_DOCUMENT_ELECTRONICALLY = 65902;
+    
+    
     public const int LIBFPTR_OK = 0;
     public const int LIBFPTR_ERROR_CONNECTION_DISABLED = 1;
     public const int LIBFPTR_ERROR_NO_CONNECTION = 2;
@@ -674,6 +677,7 @@ public static class Constants
     public const int LIBFPTR_ERROR_DRIVER_SCRIPT_ERROR = 503;
     public const int LIBFPTR_ERROR_VALIDATE_FUNC_NOT_FOUND = 504;
     public const int LIBFPTR_ERROR_WEB_FAIL = 505;
+    
     public const int LIBFPTR_PORT_COM = 0;
     public const int LIBFPTR_PORT_USB = 1;
     public const int LIBFPTR_PORT_TCPIP = 2;
@@ -688,6 +692,7 @@ public static class Constants
     public const int LIBFPTR_PORT_SB_1 = 0;
     public const int LIBFPTR_PORT_SB_1_5 = 1;
     public const int LIBFPTR_PORT_SB_2 = 2;
+    
     public const int LIBFPTR_BT_EAN_8 = 0;
     public const int LIBFPTR_BT_EAN_13 = 1;
     public const int LIBFPTR_BT_UPC_A = 2;
@@ -704,6 +709,7 @@ public static class Constants
     public const int LIBFPTR_BT_AZTEC = 13;
     public const int LIBFPTR_BT_CODE_39_EXTENDED = 14;
     public const int LIBFPTR_BC_DEFAULT = 0;
+    
     public const int LIBFPTR_BC_0 = 1;
     public const int LIBFPTR_BC_1 = 2;
     public const int LIBFPTR_BC_2 = 3;
@@ -713,6 +719,7 @@ public static class Constants
     public const int LIBFPTR_BC_6 = 7;
     public const int LIBFPTR_BC_7 = 8;
     public const int LIBFPTR_BC_8 = 9;
+    
     public const int LIBFPTR_TM_POSITION = 0;
     public const int LIBFPTR_TM_UNIT = 1;
     public const int LIBFPTR_SCT_OVERALL = 0;
@@ -734,6 +741,7 @@ public static class Constants
     public const int LIBFPTR_FNT_RELEASE = 1;
     public const int LIBFPTR_FNT_UNKNOWN = 2;
     public const int LIBFPTR_RT_CLOSE_SHIFT = 0;
+    
     public const int LIBFPTR_RT_X = 1;
     public const int LIBFPTR_RT_LAST_DOCUMENT = 2;
     public const int LIBFPTR_RT_OFD_EXCHANGE_STATUS = 3;
@@ -757,6 +765,7 @@ public static class Constants
     public const int LIBFPTR_RT_JOURNAL_DOCUMENT_BY_NUMBERS = 21;
     public const int LIBFPTR_RT_JOURNAL_DOCUMENT_BY_SHIFTS = 22;
     public const int LIBFPTR_RT_CLOSE_SHIFT_REPORTS = 23;
+    
     public const int LIBFPTR_PT_CASH = 0;
     public const int LIBFPTR_PT_ELECTRONICALLY = 1;
     public const int LIBFPTR_PT_PREPAID = 2;
@@ -767,6 +776,7 @@ public static class Constants
     public const int LIBFPTR_PT_8 = 7;
     public const int LIBFPTR_PT_9 = 8;
     public const int LIBFPTR_PT_10 = 9;
+    
     public const int LIBFPTR_TAX_DEPARTMENT = 0;
     public const int LIBFPTR_TAX_VAT18 = 1;
     public const int LIBFPTR_TAX_VAT10 = 2;
@@ -777,10 +787,12 @@ public static class Constants
     public const int LIBFPTR_TAX_VAT20 = 7;
     public const int LIBFPTR_TAX_VAT120 = 8;
     public const int LIBFPTR_TAX_INVALID = 9;
+    
     public const int LIBFPTR_EXTERNAL_DEVICE_DISPLAY = 0;
     public const int LIBFPTR_EXTERNAL_DEVICE_PINPAD = 1;
     public const int LIBFPTR_EXTERNAL_DEVICE_MODEM = 2;
     public const int LIBFPTR_EXTERNAL_DEVICE_BARCODE_SCANNER = 3;
+    
     public const int LIBFPTR_DT_STATUS = 0;
     public const int LIBFPTR_DT_CASH_SUM = 1;
     public const int LIBFPTR_DT_UNIT_VERSION = 2;
@@ -834,6 +846,7 @@ public static class Constants
     public const int LIBFPTR_DT_MCU_INFO = 50;
     public const int LIBFPTR_DT_MODULE_ADDRESS = 51;
     public const int LIBFPTR_DT_CACHE_REQUISITES = 52;
+    
     public const int LIBFPTR_FNDT_TAG_VALUE = 0;
     public const int LIBFPTR_FNDT_OFD_EXCHANGE_STATUS = 1;
     public const int LIBFPTR_FNDT_FN_INFO = 2;
@@ -857,21 +870,26 @@ public static class Constants
     public const int LIBFPTR_FNDT_ISM_EXCHANGE_STATUS = 20;
     public const int LIBFPTR_FNDT_MARKING_MODE_STATUS = 21;
     public const int LIBFPTR_FNDT_CHECK_MARK_TIME = 22;
+    
     public const int LIBFPTR_UT_FIRMWARE = 0;
     public const int LIBFPTR_UT_CONFIGURATION = 1;
     public const int LIBFPTR_UT_TEMPLATES = 2;
     public const int LIBFPTR_UT_CONTROL_UNIT = 3;
     public const int LIBFPTR_UT_BOOT = 4;
+    
     public const int LIBFPTR_FNOP_REGISTRATION = 0;
     public const int LIBFPTR_FNOP_CHANGE_FN = 1;
     public const int LIBFPTR_FNOP_CHANGE_PARAMETERS = 2;
     public const int LIBFPTR_FNOP_CLOSE_ARCHIVE = 3;
+    
     public const int LIBFPTR_OFD_CHANNEL_NONE = 0;
     public const int LIBFPTR_OFD_CHANNEL_USB = 1;
     public const int LIBFPTR_OFD_CHANNEL_PROTO = 2;
+    
     public const int LIBFPTR_PST_POWER_SUPPLY = 0;
     public const int LIBFPTR_PST_RTC_BATTERY = 1;
     public const int LIBFPTR_PST_BATTERY = 2;
+    
     public const int LIBFPTR_RT_LAST_DOCUMENT_LINES = 0;
     public const int LIBFPTR_RT_FN_DOCUMENT_TLVS = 1;
     public const int LIBFPTR_RT_EXEC_USER_SCRIPT = 2;
@@ -884,26 +902,32 @@ public static class Constants
     public const int LIBFPTR_RT_FN_UNSENT_DOCS_COUNTERS = 9;
     public const int LIBFPTR_RT_SETTINGS = 10;
     public const int LIBFPTR_RT_RUN_COMMAND = 11;
+    
     public const int LIBFPTR_LOG_ERROR = 0;
     public const int LIBFPTR_LOG_WARN = 1;
     public const int LIBFPTR_LOG_INFO = 2;
     public const int LIBFPTR_LOG_DEBUG = 3;
+    
     public const int LIBFPTR_NT_FURS = 0;
     public const int LIBFPTR_NT_MEDICINES = 1;
     public const int LIBFPTR_NT_TOBACCO = 2;
     public const int LIBFPTR_NT_SHOES = 3;
+    
     public const int LIBFPTR_UMO_GET_SIZE = 0;
     public const int LIBFPTR_UMO_READ_DATA = 1;
     public const int LIBFPTR_UMO_WRITE_DATA = 2;
     public const int LIBFPTR_UMO_READ_STRING = 3;
     public const int LIBFPTR_UMO_WRITE_STRING = 4;
     public const int LIBFPTR_UMO_COMMIT = 5;
+    
     public const int LIBFPTR_GUI_PARENT_NATIVE = 0;
     public const int LIBFPTR_GUI_PARENT_QT = 1;
+    
     public const int LIBFPTR_DEFER_NONE = 0;
     public const int LIBFPTR_DEFER_PRE = 1;
     public const int LIBFPTR_DEFER_POST = 2;
     public const int LIBFPTR_DEFER_OVERLAY = 3;
+    
     public const int LIBFPTR_TAG_TYPE_STLV = 0;
     public const int LIBFPTR_TAG_TYPE_STRING = 1;
     public const int LIBFPTR_TAG_TYPE_ARRAY = 2;
@@ -915,6 +939,7 @@ public static class Constants
     public const int LIBFPTR_TAG_TYPE_UINT_32 = 8;
     public const int LIBFPTR_TAG_TYPE_UNIX_TIME = 9;
     public const int LIBFPTR_TAG_TYPE_BOOL = 10;
+    
     public const int LIBFPTR_FT_BYTE_ARRAY = 0;
     public const int LIBFPTR_FT_BIN = 1;
     public const int LIBFPTR_FT_BCD = 2;
@@ -923,10 +948,12 @@ public static class Constants
     public const int LIBFPTR_ST_NUMBER = 0;
     public const int LIBFPTR_ST_STRING = 1;
     public const int LIBFPTR_ST_BOOL = 2;
+    
     public const int LIBFPTR_SCRIPT_EXECUTABLE = 0;
     public const int LIBFPTR_SCRIPT_JSON = 1;
     public const int LIBFPTR_SCRIPT_SETTINGS = 2;
     public const int LIBFPTR_SCRIPT_LIBRARY = 3;
+    
     public const int LIBFPTR_UCL_UNUSED = 0;
     public const int LIBFPTR_UCL_RECEIPT_TYPE = 1;
     public const int LIBFPTR_UCL_TAXATION_TYPE = 2;
@@ -937,17 +964,21 @@ public static class Constants
     public const int LIBFPTR_UCL_USER_4 = 7;
     public const int LIBFPTR_UCL_USER_5 = 8;
     public const int LIBFPTR_UCL_USER_6 = 9;
+    
     public const int LIBFPTR_FNCT_SHIFT = 0;
     public const int LIBFPTR_FNCT_NON_NULLABLE = 1;
+    
     public const int LIBFPTR_MCT_OTHER = 0;
     public const int LIBFPTR_MCT_EGAIS_20 = 1;
     public const int LIBFPTR_MCT_EGAIS_30 = 2;
+    
     public const int LIBFPTR_MCT12_UNKNOWN = 0;
     public const int LIBFPTR_MCT12_SHORT = 1;
     public const int LIBFPTR_MCT12_88_CHECK = 2;
     public const int LIBFPTR_MCT12_44_NO_CHECK = 3;
     public const int LIBFPTR_MCT12_44_CHECK = 4;
     public const int LIBFPTR_MCT12_4_NO_CHECK = 5;
+    
     public const int LIBFPTR_MES_PIECE_SOLD = 1;
     public const int LIBFPTR_MES_DRY_FOR_SALE = 2;
     public const int LIBFPTR_MES_PIECE_RETURN = 3;
@@ -957,30 +988,37 @@ public static class Constants
     public const int LIBFPTR_MCS_MARK_RECEIVE_B1 = 2;
     public const int LIBFPTR_MCS_MARK_STATE_QUERY_B5 = 3;
     public const int LIBFPTR_MCS_MARK_STATE_ANSWER_B6 = 4;
+    
     public const int LIBFPTR_NFM_LESS_50_PERCENT = 0;
     public const int LIBFPTR_NFM_FROM_50_TO_80_PERCENT = 1;
     public const int LIBFPTR_NFM_FROM_80_TO_90_PERCENT = 2;
     public const int LIBFPTR_NFM_MORE_90_PERCENT = 3;
     public const int LIBFPTR_NFM_OUT_OF_MEMORY = 4;
+    
     public const int LIBFPTR_OIS_ESTIMATED_STATUS_CORRECT = 1;
     public const int LIBFPTR_OIS_ESTIMATED_STATUS_INCORRECT = 2;
     public const int LIBFPTR_OIS_SALE_STOPPED = 3;
+    
     public const int LIBFPTR_ORR_CORRECT = 0;
     public const int LIBFPTR_ORR_INCORRECT = 1;
     public const int LIBFPTR_ORR_UNRECOGNIZED = 2;
+    
     public const int LIBFPTR_CER_CHECKED = 0;
     public const int LIBFPTR_CER_TYPE_INCORRECT = 1;
     public const int LIBFPTR_CER_NO_KEYS = 2;
     public const int LIBFPTR_CER_NO_GS1 = 3;
     public const int LIBFPTR_CER_OTHER = 4;
+    
     public const int LIBFPTR_MCS_NOT_EXECUTED = 0;
     public const int LIBFPTR_MCS_EXECUTED = 1;
     public const int LIBFPTR_MCS_IS_OVER = 2;
     public const int LIBFPTR_MCS_RESULT_IS_RECIEVED = 3;
+    
     public const int LIBFPTR_MCT_AUTONOMOUS = 0;
     public const int LIBFPTR_MCT_WAIT_FOR_RESULT = 1;
     public const int LIBFPTR_MCT_RESULT_NOT_WAIT = 2;
     public const int LIBFPTR_MCT_QUERY_NOT_SEND = 3;
+    
     public const int LIBFPTR_MCST_WAITING_FOR_TASK = 0;
     public const int LIBFPTR_MCST_OPENING_CONNECTION = 1;
     public const int LIBFPTR_MCST_SENDING = 2;
@@ -989,16 +1027,20 @@ public static class Constants
     public const int LIBFPTR_MCST_DECODE_RESULT = 5;
     public const int LIBFPTR_MCST_TASK_IS_OVER = 6;
     public const int LIBFPTR_MCST_WAITING_FOR_REPEAT = 7;
+    
     public const int LIBFPTR_SILENT_REBOOT_NO = 0;
     public const int LIBFPTR_SILENT_REBOOT_AFTER_SESSION_CLOSE = 1;
     public const int LIBFPTR_SILENT_REBOOT_BEFORE_SESSION_OPEN = 2;
+    
     public const int LIBFPTR_ERROR_BASE_RPC = 600;
     public const int LIBFPTR_ERROR_RCP_SERVER_BUSY = 601;
     public const int LIBFPTR_ERROR_RCP_SERVER_VERSION = 602;
     public const int LIBFPTR_ERROR_RCP_SERVER_EXCHANGE = 603;
     public const int LIBFPTR_ERROR_MARKING_END = 499;
     public const int LIBFPTR_ERROR_WEB_END = 599;
+    
     public const int LIBFPTR_OFD_CHANNEL_AUTO = 2;
+    
     public const string LIBFPTR_SETTING_LIBRARY_PATH = "LibraryPath";
     public const string LIBFPTR_SETTING_MODEL = "Model";
     public const string LIBFPTR_SETTING_PORT = "Port";
@@ -1027,6 +1069,7 @@ public static class Constants
     public const string LIBFPTR_SETTING_VALIDATE_MARK_WITH_FNM_ONLY = "ValidateMarksWithFnmOnly";
     public const string LIBFPTR_SETTING_AUTO_MEASUREMENT_UNIT = "AutoMeasurementUnit";
     public const string LIBFPTR_SETTING_SILENT_REBOOT = "SilentReboot";
+    
     public const int LIBFPTR_MODEL_UNKNOWN = 0;
     public const int LIBFPTR_MODEL_ATOL_25F = 57;
     public const int LIBFPTR_MODEL_ATOL_30F = 61;
@@ -1053,6 +1096,7 @@ public static class Constants
     public const int LIBFPTR_MODEL_ATOL_AUTO = 500;
     public const int LIBFPTR_MODEL_ATOL_47FA = 48;
     public const int LIBFPTR_MODEL_ATOL_PT_5F = 89;
+    
     public const int LIBFPTR_PORT_BR_1200 = 1200;
     public const int LIBFPTR_PORT_BR_2400 = 2400;
     public const int LIBFPTR_PORT_BR_4800 = 4800;
@@ -1064,11 +1108,13 @@ public static class Constants
     public const int LIBFPTR_PORT_BR_230400 = 230400;
     public const int LIBFPTR_PORT_BR_460800 = 460800;
     public const int LIBFPTR_PORT_BR_921600 = 921600;
+    
     public const int LIBFPTR_FNS_INITIAL = 0;
     public const int LIBFPTR_FNS_CONFIGURED = 1;
     public const int LIBFPTR_FNS_FISCAL_MODE = 3;
     public const int LIBFPTR_FNS_POSTFISCAL_MODE = 7;
     public const int LIBFPTR_FNS_ACCESS_ARCHIVE = 15;
+    
     public const int LIBFPTR_RT_CLOSED = 0;
     public const int LIBFPTR_RT_SELL = 1;
     public const int LIBFPTR_RT_SELL_RETURN = 2;
@@ -1078,11 +1124,13 @@ public static class Constants
     public const int LIBFPTR_RT_BUY_RETURN = 5;
     public const int LIBFPTR_RT_BUY_CORRECTION = 9;
     public const int LIBFPTR_RT_BUY_RETURN_CORRECTION = 10;
+    
     public const int LIBFPTR_FFD_UNKNOWN = 0;
     public const int LIBFPTR_FFD_1_0 = 100;
     public const int LIBFPTR_FFD_1_0_5 = 105;
     public const int LIBFPTR_FFD_1_1 = 110;
     public const int LIBFPTR_FFD_1_2 = 120;
+    
     public const int LIBFPTR_TT_DEFAULT = 0;
     public const int LIBFPTR_TT_OSN = 1;
     public const int LIBFPTR_TT_USN_INCOME = 2;
@@ -1098,6 +1146,7 @@ public static class Constants
     public const int LIBFPTR_AT_ATTORNEY = 16;
     public const int LIBFPTR_AT_COMMISSION_AGENT = 32;
     public const int LIBFPTR_AT_ANOTHER = 64;
+    
     public const int LIBFPTR_DT_CLOSED = 0;
     public const int LIBFPTR_DT_RECEIPT_SELL = 1;
     public const int LIBFPTR_DT_RECEIPT_SELL_RETURN = 2;
@@ -1114,6 +1163,7 @@ public static class Constants
     public const int LIBFPTR_DT_RECEIPT_BUY_RETURN_CORRECTION = 15;
     public const int LIBFPTR_DT_DOCUMENT_SERVICE = 20;
     public const int LIBFPTR_DT_DOCUMENT_COPY = 21;
+    
     public const int LIBFPTR_FN_DOC_REGISTRATION = 1;
     public const int LIBFPTR_FN_DOC_OPEN_SHIFT = 2;
     public const int LIBFPTR_FN_DOC_RECEIPT = 3;
@@ -1125,15 +1175,21 @@ public static class Constants
     public const int LIBFPTR_FN_DOC_EXCHANGE_STATUS = 21;
     public const int LIBFPTR_FN_DOC_CORRECTION = 31;
     public const int LIBFPTR_FN_DOC_BSO_CORRECTION = 41;
+    
     public const int LIBFPTR_FWT_FIRMWARE = 0;
     public const int LIBFPTR_FWT_SCRIPTS = 2;
+    
     public const int LIBFPTR_UCF_CALC_SUMS = 1;
     public const int LIBFPTR_UCF_CALC_QUANTITIES = 2;
     public const int LIBFPTR_UCF_CALC_SUMS_OTHERS = 4;
     public const int LIBFPTR_UCF_CALC_QUANTITIES_OTHERS = 8;
+    
     public const uint LIBFPTR_UC_OTHERS = 4294967295;
+    
     public const int LIBFPTR_MCT12_AUTO = 256;
+    
     public const int LIBFPTR_MES_UNCHANGED = 255;
+    
     public const int LIBFPTR_IU_PIECE = 0;
     public const int LIBFPTR_IU_GRAM = 10;
     public const int LIBFPTR_IU_KILOGRAM = 11;
@@ -1158,6 +1214,7 @@ public static class Constants
     public const int LIBFPTR_IU_GIGABYTE = 82;
     public const int LIBFPTR_IU_TERABYTE = 83;
     public const int LIBFPTR_IU_OTHER = 255;
+    
     public const int LIBFPTR_ERROR_USERS_SCRIPTS_BASE = 1000;
     public const int LIBFPTR_ERROR_USERS_SCRIPTS_END = 1999;
     public const int LIBFPTR_ERROR_RPC_END = 699;
