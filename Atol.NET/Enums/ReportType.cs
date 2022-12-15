@@ -2,6 +2,7 @@ namespace Atol.NET.Enums;
 
 public enum ReportType
 {
+    CloseShift,
     X,
     LastDocument,
     OfdExchangeStatus,
