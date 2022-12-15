@@ -28,6 +28,11 @@ public interface IAtolApi
     ///     Категория для работы с отчетами
     /// </summary>
     IReportsCategory Reports { get; }
+    
+    /// <summary>
+    ///     Категория для работы со сменой
+    /// </summary>
+    IShiftCategory Shift { get; }
 
     /// <summary>
     ///     Категория для работы с регистрационными операциями ФН

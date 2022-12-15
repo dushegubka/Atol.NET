@@ -123,7 +123,10 @@ public class AtolApi : IAtolApi
     public IReportsCategory Reports { get; private set; }
 
     /// <inheritdoc />
-    public IRegistrationCategory Registration { get; set; }
+    public IShiftCategory Shift { get; private set; }
+
+    /// <inheritdoc />
+    public IRegistrationCategory Registration { get; private set; }
 
     /// <inheritdoc />
     public ISettingsCategory Settings { get; private set; }
@@ -158,5 +161,6 @@ public class AtolApi : IAtolApi
         Reports = new ReportsCategory(_kkt, _requestService);
         Registration = new RegistrationCategory(_kkt, _requestService);
         Settings = new SettingsCategory(_kkt, _requestService);
+        Shift = new ShiftCategory(_kkt, _requestService);
     }
 }
