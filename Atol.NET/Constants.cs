@@ -740,8 +740,8 @@ public static class Constants
     public const int LIBFPTR_FNT_DEBUG = 0;
     public const int LIBFPTR_FNT_RELEASE = 1;
     public const int LIBFPTR_FNT_UNKNOWN = 2;
-    public const int LIBFPTR_RT_CLOSE_SHIFT = 0;
     
+    public const int LIBFPTR_RT_CLOSE_SHIFT = 0;
     public const int LIBFPTR_RT_X = 1;
     public const int LIBFPTR_RT_LAST_DOCUMENT = 2;
     public const int LIBFPTR_RT_OFD_EXCHANGE_STATUS = 3;
